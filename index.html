@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KG Grocery Delivery | Debre Markos – shop by category</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background-color: #fefefe;
+            color: #1e2a2f;
+            line-height: 1.6;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        /* header / navbar */
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 1rem 0;
+        }
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2b7a4b;
+            letter-spacing: -0.5px;
+        }
+        .logo span {
+            color: #2c3e50;
+            font-weight: 400;
+            font-size: 1rem;
+            margin-left: 4px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: color 0.2s;
+            font-size: 1rem;
+        }
+        .nav-links a:hover {
+            color: #2b7a4b;
+        }
+        .hamburger {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #2c3e50;
+        }
+        /* hero section */
+        .hero {
+            background: linear-gradient(135deg, #e8f5e9 0%, #f1f9f0 100%);
+            padding: 4rem 0;
+            border-bottom: 1px solid #c8e6c9;
+        }
+        .hero .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        .hero-content {
+            flex: 1 1 400px;
+        }
+        .hero-content h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            line-height: 1.2;
+            color: #1e2a2f;
+        }
+        .hero-content .highlight {
+            color: #2b7a4b;
+        }
+        .hero-content p {
+            margin: 1.5rem 0 2rem;
+            font-size: 1.2rem;
+            color: #3a5a4a;
+            max-width: 500px;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #2b7a4b;
+            color: white;
+            padding: 0.9rem 2rem;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.2s, transform 0.1s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .btn:hover {
+            background-color: #1e5f38;
+            transform: scale(1.02);
+        }
+        .btn-outline {
+            background-color: transparent;
+            color: #2b7a4b;
+            border: 2px solid #2b7a4b;
+            margin-left: 1rem;
+        }
+        .btn-outline:hover {
+            background-color: #2b7a4b;
+            color: white;
+        }
+        .hero-image {
+            flex: 1 1 300px;
+            text-align: center;
+        }
+        .hero-image i {
+            font-size: 15rem;
+            color: #2b7a4b;
+            opacity: 0.8;
+        }
+        /* Section styling */
+        section {
+            padding: 5rem 0;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1e2a2f;
+        }
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #4a6b5a;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+        }
+        /* about */
+        .about-text {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 1.2rem;
+            color: #2c3e50;
+            background: #edf7ed;
+            padding: 2.5rem;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+        .about-text i {
+            color: #2b7a4b;
+            margin-right: 8px;
+        }
+        /* Category tabs */
+        .category-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+        .category-btn {
+            background: white;
+            border: 2px solid #c8e6c9;
+            color: #1e2a2f;
+            padding: 0.8rem 2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .category-btn:hover {
+            background: #e8f5e9;
+            border-color: #2b7a4b;
+        }
+        .category-btn.active {
+            background: #2b7a4b;
+            border-color: #2b7a4b;
+            color: white;
+        }
+        /* GROCERY ITEMS GRID */
+        .grocery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .grocery-item {
+            background: white;
+            padding: 1.5rem 1rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(43, 122, 75, 0.05);
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #c8e6c9;
+        }
+        .grocery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 30px rgba(43, 122, 75, 0.15);
+        }
+        .grocery-item i {
+            font-size: 2.8rem;
+            color: #2b7a4b;
+            margin-bottom: 0.8rem;
+        }
+        .grocery-item h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e2a2f;
+            margin-bottom: 0.3rem;
+        }
+        .grocery-item p {
+            color: #4a6b5a;
+            font-size: 0.9rem;
+        }
+        /* hidden class for filtering */
+        .grocery-item.hidden {
+            display: none;
+        }
+        /* track section */
+        .track-section {
+            background: #edf7ed;
+        }
+        .track-card {
+            background: white;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 2.5rem;
+            border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .track-card h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .track-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+            justify-content: center;
+        }
+        .track-form input {
+            flex: 2 1 250px;
+            padding: 1rem 1.5rem;
+            border: 2px solid #c8e6c9;
+            border-radius: 50px;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.2s;
+        }
+        .track-form input:focus {
+            border-color: #2b7a4b;
+        }
+        .track-form button {
+            flex: 0 1 auto;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            border: none;
+            background: #2b7a4b;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .track-form button:hover {
+            background: #1e5f38;
+        }
+        .mock-result {
+            margin-top: 2rem;
+            color: #2c3e50;
+            font-weight: 500;
+            background: #edf7ed;
+            padding: 1rem;
+            border-radius: 60px;
+            display: none;
+        }
+        .mock-result.show {
+            display: block;
+        }
+        /* order / contact section (with address field) */
+        .order-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+        .contact-info {
+            flex: 1 1 300px;
+            background: #edf7ed;
+            padding: 2rem;
+            border-radius: 30px;
+        }
+        .contact-info h4 {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+        }
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .info-item i {
+            font-size: 1.8rem;
+            color: #2b7a4b;
+            width: 40px;
+        }
+        .info-item p {
+            font-size: 1.1rem;
+            color: #2c3e50;
+        }
+        .order-form {
+            flex: 2 1 400px;
+            background: white;
+            padding: 2rem;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+        }
+        .order-form h4 {
+            font-size: 1.8rem;
+            margin-bottom: 1.8rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 2px solid #c8e6c9;
+            border-radius: 20px;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.2s;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #2b7a4b;
+        }
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        .order-form button {
+            background: #2b7a4b;
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .order-form button:hover {
+            background: #1e5f38;
+        }
+        /* address note */
+        .delivery-note {
+            margin-top: 2rem;
+            background: #e8f5e9;
+            padding: 1.5rem;
+            border-radius: 30px;
+            text-align: center;
+            font-weight: 500;
+            color: #1e3a2a;
+            border: 1px dashed #2b7a4b;
+        }
+        .delivery-note i {
+            color: #2b7a4b;
+            margin-right: 0.5rem;
+        }
+        /* footer */
+        .footer {
+            background: #1e2a2f;
+            color: #eaecf0;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            list-style: none;
+            margin: 1rem 0;
+        }
+        .footer-links a {
+            color: #eaecf0;
+            text-decoration: none;
+        }
+        .footer-links a:hover {
+            color: #2b7a4b;
+        }
+        .social-icons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        .social-icons a {
+            color: #eaecf0;
+        }
+        .social-icons a:hover {
+            color: #2b7a4b;
+        }
+        hr {
+            border: 0.5px solid #4a6b5a;
+            margin: 1.5rem 0 1rem;
+        }
+        /* responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .hamburger {
+                display: block;
+            }
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            .hero-image i {
+                font-size: 10rem;
+            }
+            .btn-outline {
+                margin-left: 0;
+                margin-top: 1rem;
+            }
+            .hero .container {
+                text-align: center;
+                justify-content: center;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">KG <span>Grocery</span></div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#groceries">Groceries</a></li>
+                <li><a href="#track">Track</a></li>
+                <li><a href="#order">Order</a></li>
+            </ul>
+            <div class="hamburger">☰</div>
+        </div>
+    </nav>
+
+    <!-- Hero / Home -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Fresh groceries delivered to your door in <span class="highlight">Debre Markos</span></h1>
+                <p>KG Grocery brings you a huge variety – from farm-fresh produce to dairy, meat, spices, and traditional
+                 staples. Order now and get delivery within 24 hour.</p>
+                <div>
+                    <a href="#order" class="btn">Order now</a>
+                    <a href="#groceries" class="btn btn-outline">Browse groceries</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <i class="fas fa-shopping-basket"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">About KG Grocery</h2>
+            <p class="section-subtitle">Your neighbourhood grocery partner</p>
+            <div class="about-text">
+                <i class="fas fa-leaf"></i> We are a Debre Markos based delivery service dedicated to bringing you the freshest fruits, vegetables, and daily essentials. We hand-pick every item from trusted local suppliers and deliver within hours. No minimum order, no hidden fees — just good food, fast.
+            </div>
+        </div>
+    </section>
+
+    <!-- GROCERIES SECTION with category tabs -->
+    <section id="groceries">
+        <div class="container">
+            <h2 class="section-title">Shop by category</h2>
+            <p class="section-subtitle">Click a category to see the items</p>
+            
+            <!-- Category filter buttons -->
+            <div class="category-tabs">
+                <button class="category-btn active" data-category="all">All</button>
+                <button class="category-btn" data-category="fruits">Fruits</button>
+                <button class="category-btn" data-category="vegetables">Vegetables</button>
+                <button class="category-btn" data-category="dairy">Dairy & Eggs</button>
+                <button class="category-btn" data-category="bakery">Bakery</button>
+                <button class="category-btn" data-category="meat">Meat & Fish</button>
+                <button class="category-btn" data-category="pantry">Pantry</button>
+            </div>
+
+            <!-- Grocery items grid with data-category attributes -->
+            <div class="grocery-grid" id="groceryGrid">
+                <!-- Fruits -->
+                <div class="grocery-item" data-category="fruits"><i class="fas fa-apple-alt"></i><h4>Apples</h4><p>fresh, imported</p></div>
+                <div class="grocery-item" data-category="fruits"><i class="fas fa-apple-alt"></i><h4>Bananas</h4><p>sweet & ripe</p></div>
+                <div class="grocery-item" data-category="fruits"><i class="fas fa-lemon"></i><h4>Lemons</h4><p>juicy, local</p></div>
+                <div class="grocery-item" data-category="fruits"><i class="fas fa-apple-alt"></i><h4>Oranges</h4><p>seedless</p></div>
+                <!-- Vegetables -->
+                <div class="grocery-item" data-category="vegetables"><i class="fas fa-carrot"></i><h4>Carrots</h4><p>crunchy</p></div>
+                <div class="grocery-item" data-category="vegetables"><i class="fas fa-pepper-hot"></i><h4>Tomatoes</h4><p>vine‑ripened</p></div>
+                <div class="grocery-item" data-category="vegetables"><i class="fas fa-pepper-hot"></i><h4>Onions</h4><p>red & white</p></div>
+                <div class="grocery-item" data-category="vegetables"><i class="fas fa-seedling"></i><h4>Potatoes</h4><p>fresh harvest</p></div>
+                <div class="grocery-item" data-category="vegetables"><i class="fas fa-leaf"></i><h4>Lettuce</h4><p>crisp</p></div>
+                <div class="grocery-item" data-category="vegetables"><i class="fas fa-pepper-hot"></i><h4>Green peppers</h4><p>mild</p></div>
+                <!-- Dairy & Eggs -->
+                <div class="grocery-item" data-category="dairy"><i class="fas fa-egg"></i><h4>Eggs</h4><p>free‑range</p></div>
+                <div class="grocery-item" data-category="dairy"><i class="fas fa-cheese"></i><h4>Milk</h4><p>fresh, 1L</p></div>
+                <div class="grocery-item" data-category="dairy"><i class="fas fa-cheese"></i><h4>Yogurt</h4><p>creamy</p></div>
+                <div class="grocery-item" data-category="dairy"><i class="fas fa-cheese"></i><h4>Cheese</h4><p>local & imported</p></div>
+                <!-- Bakery -->
+                <div class="grocery-item" data-category="bakery"><i class="fas fa-bread-slice"></i><h4>Injera</h4><p>fresh daily</p></div>
+                <div class="grocery-item" data-category="bakery"><i class="fas fa-bread-slice"></i><h4>White bread</h4><p>soft</p></div>
+                <div class="grocery-item" data-category="bakery"><i class="fas fa-bread-slice"></i><h4>Whole wheat</h4><p>healthy</p></div>
+                <!-- Meat & Fish -->
+                <div class="grocery-item" data-category="meat"><i class="fas fa-drumstick-bite"></i><h4>Chicken</h4><p>fresh, whole</p></div>
+                <div class="grocery-item" data-category="meat"><i class="fas fa-fish"></i><h4>Tilapia</h4><p>fresh</p></div>
+                <div class="grocery-item" data-category="meat"><i class="fas fa-drumstick-bite"></i><h4>Beef</h4><p>lean cuts</p></div>
+                <!-- Pantry -->
+                <div class="grocery-item" data-category="pantry"><i class="fas fa-wine-bottle"></i><h4>Cooking oil</h4><p>1L, 2L</p></div>
+                <div class="grocery-item" data-category="pantry"><i class="fas fa-wine-bottle"></i><h4>Rice</h4><p>imported</p></div>
+                <div class="grocery-item" data-category="pantry"><i class="fas fa-wine-bottle"></i><h4>Pasta</h4><p>spaghetti</p></div>
+                <div class="grocery-item" data-category="pantry"><i class="fas fa-wine-bottle"></i><h4>Sugar</h4><p>white</p></div>
+                <div class="grocery-item" data-category="pantry"><i class="fas fa-mug-hot"></i><h4>Coffee</h4><p>roasted beans</p></div>
+                <div class="grocery-item" data-category="pantry"><i class="fas fa-mug-hot"></i><h4>Tea</h4><p>black & herbal</p></div>
+                <div class="grocery-item" data-category="pantry"><i class="fas fa-wine-bottle"></i><h4>Flour</h4><p>teff, wheat</p></div>
+                <div class="grocery-item" data-category="pantry"><i class="fas fa-wine-bottle"></i><h4>Spices</h4><p>berbere, etc.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Track Order Section (mock) -->
+    <section class="track-section" id="track">
+        <div class="container">
+            <div class="track-card">
+                <h3><i class="fas fa-search" style="color: #2b7a4b;"></i> Track your grocery order</h3>
+                <p>Enter your order number to see real‑time updates (demo)</p>
+                <div class="track-form">
+                    <input type="text" id="trackingInput" placeholder="e.g., KAL-12345" value="KAL-9876-DBR">
+                    <button id="trackBtn">Track</button>
+                </div>
+                <div id="mockResult" class="mock-result">
+                    <i class="fas fa-check-circle" style="color: #2e8b57;"></i> 
+                    Your order #KAL-9876-DBR is <strong>out for delivery</strong> and will arrive within 30 minutes.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order / Contact Section (with address field) -->
+    <section id="order">
+        <div class="container">
+            <h2 class="section-title">Order groceries</h2>
+            <p class="section-subtitle">Tell us what you need and where to deliver — we’ll take care of the rest</p>
+            <div class="order-grid">
+                <!-- left: contact info -->
+                <div class="contact-info">
+                    <h4>KG Grocery <span style="color:#2b7a4b;">●</span></h4>
+                    <div class="info-item">
+                        <i class="fas fa-map-pin"></i>
+                         <p>Main office: Debre Markos,<br> Kebele 01, near Commercial Bank of Ethiopia,<br> Abima branch</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <p>+251 967 859 515 <br> +251 953 082 867</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <p>grocery@kg.et <br> order@kggrocery.com</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <p>Mon–Fri: 12:00 AM – 2:00 AM &<br> 10:30 AM – 12:30 PM<br> Sat & Sun: 12:00 AM – 12:00 PM</p>
+                    </div>
+                </div>
+                <!-- right: order form with address -->
+                <div class="order-form">
+                    <h4>Place your order</h4>
+                    <form id="orderForm" action="https://formspree.io/f/xkoqrgdq" method="POST">
+    <div class="form-group">
+        <input type="text" name="name" placeholder="Your full name" required>
+    </div>
+    <div class="form-group">
+        <input type="text" name="phone" placeholder="Phone number (for delivery updates)" required>
+    </div>
+    <div class="form-group">
+        <input type="email" name="email" placeholder="Email address (optional)">
+    </div>
+    <div class="form-group">
+        <input type="text" name="address" placeholder="Delivery address (house number, landmark, area)" required>
+    </div>
+    <div class="form-group">
+        <textarea name="order" placeholder="What would you like to order? (e.g., 2kg tomatoes, 1L milk, 1 loaf of bread)"></textarea>
+    </div>
+    <div class="form-group">
+        <textarea name="instructions" placeholder="Additional instructions (gate color, preferred time, etc.)"></textarea>
+    </div>
+    <!-- Optional: redirect the customer after submission -->
+    <input type="hidden" name="_redirect" value="https://your-site.com/thank-you.html">
+    <!-- Optional: set a custom subject line for the email you receive -->
+    <input type="hidden" name="_subject" value="New grocery order from website">
+    <button type="submit">Place order</button>
+</form>
+                </div>
+            </div>
+            <!-- delivery note -->
+            <div class="delivery-note">
+                <i class="fas fa-pen"></i> Please write your full address clearly. We deliver to every neighbourhood in Debre Markos.
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div style="font-size: 1.8rem; font-weight: 700;">KG <span style="color:#2b7a4b;">Grocery</span></div>
+            <ul class="footer-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#groceries">Groceries</a></li>
+                <li><a href="#track">Track</a></li>
+                <li><a href="#order">Order</a></li>
+            </ul>
+            <div class="social-icons">
+                <a href="https://www.telegram.com"><i class="fab fa-telegram"></i></a>
+                <a href="https://www.facebook.com/"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.twitter.com"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.instagram.com"><i class="fab fa-instagram"></i></a>
+            </div>
+            <hr>
+            <p>© 2025 KG Grocery Delivery — Debre Markos, Ethiopia. All rights reserved.</p>
+            <p style="font-size: 0.9rem; margin-top: 0.5rem;">🥦 Fresh from our family to yours</p>
+        </div>
+    </footer>
+
+    <!-- Script for category filtering, mock tracking, smooth scroll -->
+    <script>
+        (function() {
+            // ---------- CATEGORY FILTERING ----------
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            const groceryItems = document.querySelectorAll('.grocery-item');
+
+            function filterItems(category) {
+                groceryItems.forEach(item => {
+                    if (category === 'all' || item.dataset.category === category) {
+                        item.classList.remove('hidden');
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+            }
+
+            // Set active button and filter
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    categoryBtns.forEach(b => b.classList.remove('active'));
+                    // Add active to clicked button
+                    this.classList.add('active');
+                    // Get category and filter
+                    const category = this.dataset.category;
+                    filterItems(category);
+                });
+            });
+
+            // Initially show all (active 'all' by default)
+            filterItems('all');
+
+            // ---------- MOCK TRACKING ----------
+            const trackBtn = document.getElementById('trackBtn');
+            const input = document.getElementById('trackingInput');
+            const resultDiv = document.getElementById('mockResult');
+
+            trackBtn.addEventListener('click', function() {
+                let trackingNumber = input.value.trim();
+                if (trackingNumber === '') {
+                    alert('Please enter a tracking number');
+                    return;
+                }
+                resultDiv.innerHTML = `<i class="fas fa-check-circle" style="color: #2e8b57;"></i> 
+                    Your order <strong>${trackingNumber}</strong> is out for delivery and will arrive within 30 minutes.`;
+                resultDiv.classList.add('show');
+            });
+
+            // ---------- HAMBURGER DEMO ----------
+            const hamburger = document.querySelector('.hamburger');
+            hamburger.addEventListener('click', function() {
+                alert('Mobile menu would open here — in a real site you’d show the nav links.');
+            });
+
+            // ---------- SMOOTH SCROLLING ----------
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
