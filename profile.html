@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | KG Grocery</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Copy all styles from your index.html here (the full <style> block) */
+        /* I'll include only the new profile-specific styles below – please keep your existing styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background-color: #fefefe;
+            color: #1e2a2f;
+            line-height: 1.6;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 1rem 0;
+        }
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2b7a4b;
+            letter-spacing: -0.5px;
+        }
+        .logo span {
+            color: #2c3e50;
+            font-weight: 400;
+            font-size: 1rem;
+            margin-left: 4px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: color 0.2s;
+            font-size: 1rem;
+        }
+        .nav-links a:hover {
+            color: #2b7a4b;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .user-info span {
+            font-weight: 600;
+            color: #2b7a4b;
+        }
+        .logout-btn {
+            background: transparent;
+            border: 2px solid #2b7a4b;
+            color: #2b7a4b;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .logout-btn:hover {
+            background: #2b7a4b;
+            color: white;
+        }
+        .hamburger {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #2c3e50;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #2b7a4b;
+            color: white;
+            padding: 0.9rem 2rem;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .btn:hover {
+            background-color: #1e5f38;
+        }
+        .btn-outline {
+            background-color: transparent;
+            color: #2b7a4b;
+            border: 2px solid #2b7a4b;
+        }
+        .btn-outline:hover {
+            background-color: #2b7a4b;
+            color: white;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #4a6b5a;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+        }
+        /* Profile page specific */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .profile-sidebar {
+            background: white;
+            border: 1px solid #c8e6c9;
+            border-radius: 20px;
+            padding: 1.5rem;
+            height: fit-content;
+        }
+        .profile-avatar {
+            text-align: center;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 1.5rem;
+        }
+        .profile-avatar i {
+            font-size: 4rem;
+            color: #2b7a4b;
+            margin-bottom: 0.5rem;
+        }
+        .profile-avatar h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+        .profile-avatar p {
+            color: #4a6b5a;
+            font-size: 0.9rem;
+        }
+        .profile-menu {
+            list-style: none;
+        }
+        .profile-menu li {
+            margin-bottom: 0.5rem;
+        }
+        .profile-menu a {
+            display: block;
+            padding: 0.8rem 1rem;
+            text-decoration: none;
+            color: #1e2a2f;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+        .profile-menu a:hover,
+        .profile-menu a.active {
+            background: #e8f5e9;
+            color: #2b7a4b;
+        }
+        .profile-menu i {
+            width: 24px;
+            color: #2b7a4b;
+        }
+        .profile-content {
+            background: white;
+            border: 1px solid #c8e6c9;
+            border-radius: 20px;
+            padding: 2rem;
+        }
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .orders-table th {
+            background: #2b7a4b;
+            color: white;
+            padding: 0.8rem;
+            text-align: left;
+        }
+        .orders-table td {
+            padding: 0.8rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .status-delivered { background: #c8e6c9; color: #1e5f38; }
+        .status-pending { background: #fff3e0; color: #e65100; }
+        .status-cancelled { background: #ffebee; color: #c44536; }
+        .no-orders {
+            text-align: center;
+            padding: 2rem;
+            color: #888;
+        }
+        .footer {
+            background: #1e2a2f;
+            color: #eaecf0;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            list-style: none;
+            margin: 1rem 0;
+        }
+        .footer-links a {
+            color: #eaecf0;
+            text-decoration: none;
+        }
+        .footer-links a:hover {
+            color: #2b7a4b;
+        }
+        .social-icons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        .social-icons a {
+            color: #eaecf0;
+        }
+        hr {
+            border: 0.5px solid #4a6b5a;
+            margin: 1.5rem 0 1rem;
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .hamburger {
+                display: block;
+            }
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar (same as index) -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">KG <span>Grocery</span></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#groceries">Groceries</a></li>
+                <li><a href="index.html#track">Track</a></li>
+                <li><a href="index.html#order">Order</a></li>
+                <li><a href="profile.html" class="active">Profile</a></li>
+            </ul>
+            <div class="user-info" id="userInfo" style="display: none;">
+                <span id="userName"></span>
+                <button class="logout-btn" id="logoutBtn">Logout</button>
+            </div>
+            <button class="auth-btn" id="loginBtn" style="display: none;">Login / Register</button>
+            <div class="hamburger">☰</div>
+        </div>
+    </nav>
+
+    <section class="profile-page">
+        <div class="container">
+            <h1 class="section-title">My Profile</h1>
+            <div class="profile-grid">
+                <div class="profile-sidebar">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user-circle"></i>
+                        <h3 id="profileName">Loading...</h3>
+                        <p id="profilePhone"></p>
+                    </div>
+                    <ul class="profile-menu">
+                        <li><a href="#dashboard" class="active" id="dashboardTab"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                        <li><a href="#orders" id="ordersTab"><i class="fas fa-shopping-bag"></i> My Orders</a></li>
+                        <li><a href="#settings" id="settingsTab"><i class="fas fa-user-edit"></i> Account Settings</a></li>
+                    </ul>
+                </div>
+                <div class="profile-content" id="dashboardContent">
+                    <h2>Welcome back, <span id="welcomeName"></span>!</h2>
+                    <p>This is your dashboard. View your recent orders and manage your account.</p>
+                    <div style="margin-top: 2rem;">
+                        <h3>Recent Orders</h3>
+                        <div id="recentOrders"></div>
+                    </div>
+                </div>
+                <div class="profile-content" id="ordersContent" style="display: none;">
+                    <h2>My Orders</h2>
+                    <div id="allOrders"></div>
+                </div>
+                <div class="profile-content" id="settingsContent" style="display: none;">
+                    <h2>Account Settings</h2>
+                    <p>You can change your name and phone here (demo).</p>
+                    <form id="settingsForm">
+                        <div class="form-group" style="margin-bottom: 1rem;">
+                            <label>Full Name</label>
+                            <input type="text" id="settingsName" style="width:100%; padding:0.8rem; border:2px solid #c8e6c9; border-radius:12px;">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 1rem;">
+                            <label>Phone</label>
+                            <input type="text" id="settingsPhone" style="width:100%; padding:0.8rem; border:2px solid #c8e6c9; border-radius:12px;" readonly>
+                        </div>
+                        <button type="submit" class="btn">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div style="font-size: 1.8rem; font-weight: 700;">KG <span style="color:#2b7a4b;">Grocery</span></div>
+            <ul class="footer-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#groceries">Groceries</a></li>
+                <li><a href="index.html#track">Track</a></li>
+                <li><a href="index.html#order">Order</a></li>
+                <li><a href="profile.html">Profile</a></li>
+            </ul>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-telegram"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+            <hr>
+            <p>© 2025 KG Grocery Delivery — Debre Markos, Ethiopia. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Get user from localStorage
+        const user = JSON.parse(localStorage.getItem('kgCurrentUser'));
+        if (!user) {
+            // If not logged in, redirect to home
+            window.location.href = 'index.html';
+        }
+
+        // Display user info
+        document.getElementById('profileName').textContent = user.name;
+        document.getElementById('profilePhone').textContent = user.phone;
+        document.getElementById('welcomeName').textContent = user.name;
+        document.getElementById('settingsName').value = user.name;
+        document.getElementById('settingsPhone').value = user.phone;
+
+        // Mock orders data (in real app, this would come from localStorage or server)
+        const mockOrders = [
+            { id: 'ORD-001', date: '2025-03-12', total: 450, status: 'delivered' },
+            { id: 'ORD-002', date: '2025-03-10', total: 280, status: 'pending' },
+            { id: 'ORD-003', date: '2025-03-05', total: 620, status: 'delivered' }
+        ];
+
+        function renderOrders(containerId, limit) {
+            const container = document.getElementById(containerId);
+            const ordersToShow = limit ? mockOrders.slice(0, limit) : mockOrders;
+            if (ordersToShow.length === 0) {
+                container.innerHTML = '<p class="no-orders">No orders found.</p>';
+                return;
+            }
+            let html = '<table class="orders-table"><thead><tr><th>Order #</th><th>Date</th><th>Total</th><th>Status</th></tr></thead><tbody>';
+            ordersToShow.forEach(order => {
+                html += `<tr>
+                    <td>${order.id}</td>
+                    <td>${order.date}</td>
+                    <td>${order.total} Birr</td>
+                    <td><span class="status-badge status-${order.status}">${order.status}</span></td>
+                </tr>`;
+            });
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        renderOrders('recentOrders', 2);
+        renderOrders('allOrders');
+
+        // Tab switching
+        const tabs = {
+            dashboard: document.getElementById('dashboardContent'),
+            orders: document.getElementById('ordersContent'),
+            settings: document.getElementById('settingsContent')
+        };
+        document.getElementById('dashboardTab').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelectorAll('.profile-menu a').forEach(a => a.classList.remove('active'));
+            e.target.classList.add('active');
+            Object.values(tabs).forEach(tab => tab.style.display = 'none');
+            tabs.dashboard.style.display = 'block';
+        });
+        document.getElementById('ordersTab').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelectorAll('.profile-menu a').forEach(a => a.classList.remove('active'));
+            e.target.classList.add('active');
+            Object.values(tabs).forEach(tab => tab.style.display = 'none');
+            tabs.orders.style.display = 'block';
+        });
+        document.getElementById('settingsTab').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelectorAll('.profile-menu a').forEach(a => a.classList.remove('active'));
+            e.target.classList.add('active');
+            Object.values(tabs).forEach(tab => tab.style.display = 'none');
+            tabs.settings.style.display = 'block';
+        });
+
+        // Handle settings form
+        document.getElementById('settingsForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newName = document.getElementById('settingsName').value.trim();
+            if (newName) {
+                user.name = newName;
+                localStorage.setItem('kgCurrentUser', JSON.stringify(user));
+                // Update displayed name
+                document.getElementById('profileName').textContent = newName;
+                document.getElementById('welcomeName').textContent = newName;
+                alert('Profile updated successfully!');
+            }
+        });
+
+        // Logout button (if exists in this page, we need to add it to navbar? Actually we can reuse the one from index but here we need to add it manually because navbar is static)
+        // For simplicity, we'll add logout handler to a button if present
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                localStorage.removeItem('kgCurrentUser');
+                window.location.href = 'index.html';
+            });
+        }
+
+        // Hamburger mock
+        document.querySelector('.hamburger')?.addEventListener('click', () => {
+            alert('Mobile menu would open here');
+        });
+    </script>
+</body>
+</html>
