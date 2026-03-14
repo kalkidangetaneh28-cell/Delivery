@@ -9,7 +9,6 @@
     <!-- Google Fonts Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <style>
-        /* (all previous styles remain exactly the same) */
         * {
             margin: 0;
             padding: 0;
@@ -101,6 +100,21 @@
             font-weight: 600;
         }
         .logout-btn:hover {
+            background: #2b7a4b;
+            color: white;
+        }
+        .account-link {
+            background: transparent;
+            border: 2px solid #2b7a4b;
+            color: #2b7a4b;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .account-link:hover {
             background: #2b7a4b;
             color: white;
         }
@@ -749,6 +763,7 @@
                 <li><a href="#groceries">Groceries</a></li>
                 <li><a href="#track">Track</a></li>
                 <li><a href="#order">Order</a></li>
+                <li><a href="profile.html">Profile</a></li>
             </ul>
             <div class="user-info" id="userInfo" style="display: none;">
                 <span id="userName"></span>
@@ -804,7 +819,7 @@
                 <button class="category-btn" data-category="pantry">Pantry</button>
             </div>
 
-            <!-- Grocery items grid (same as before) -->
+            <!-- Grocery items grid -->
             <div class="grocery-grid" id="groceryGrid">
                 <!-- Fruits -->
                 <div class="grocery-item" data-category="fruits" data-name="Apples" data-price="80">
@@ -1296,6 +1311,18 @@
                     loginBtn.style.display = 'none';
                     userInfo.style.display = 'flex';
                     userNameSpan.textContent = user.name;
+
+                    // Remove any existing account link before adding a new one
+                    const existingLink = userInfo.querySelector('.account-link');
+                    if (existingLink) existingLink.remove();
+
+                    // Create and insert "My Account" link
+                    const profileLink = document.createElement('a');
+                    profileLink.href = 'profile.html';
+                    profileLink.className = 'account-link';
+                    profileLink.textContent = 'My Account';
+                    userInfo.insertBefore(profileLink, logoutBtn);
+
                     loginRequired.style.display = 'none';
                     orderContent.style.display = 'block';
                 } else {
@@ -1505,38 +1532,50 @@
                 if (method === 'telebirr') {
                     html = `
                         <div class="telebirr-info">
-                            <h4 style="margin-bottom:0.5rem;"><i class="fas fa-mobile-alt" style="color:#2b7a4b;"></i> Telebirr</h4>
-                            <p>Click "Place order" to continue to Telebirr secure payment page.</p>
-                            <p><small>You'll return to confirm your order after payment.</small></p>
+                            <h4><i class="fas fa-mobile-alt" style="color:#2b7a4b;"></i> Telebirr Payment</h4>
+                            <p>1. Open your Telebirr app.</p>
+                            <p>2. Select "Pay" and scan the QR code below or enter the merchant code.</p>
+                            <div style="background:#fff; padding:1rem; text-align:center; margin:1rem 0;">
+                                <i class="fas fa-qrcode" style="font-size:5rem; color:#2b7a4b;"></i>
+                                <p><strong>Merchant: KG Grocery</strong></p>
+                                <p>Code: 123456</p>
+                            </div>
+                            <p>3. Enter amount: <strong id="telebirrAmount">${document.getElementById('order_total')?.value || '0'} Birr</strong></p>
+                            <p>4. Confirm payment. You'll be redirected automatically.</p>
                         </div>
                     `;
                 } else if (method === 'bank') {
                     const total = document.getElementById('order_total') ? document.getElementById('order_total').value : '0';
                     html = `
                         <div class="bank-details">
-                            <h4 style="margin-bottom:0.5rem;">Bank Transfer</h4>
-                            <p><strong>Bank:</strong> Commercial Bank of Ethiopia</p>
-                            <p><strong>Account:</strong> KG Grocery Delivery</p>
-                            <p><strong>Number:</strong> 1000023456789</p>
-                            <p><strong>Amount:</strong> ${total} Birr</p>
-                            <button class="copy-btn" onclick="copyAccount()">Copy account number</button>
-                            <p style="margin-top:1rem;">After transfer, we'll confirm manually.</p>
+                            <h4>Bank Transfer</h4>
+                            <p>Transfer the exact amount to one of these accounts:</p>
+                            <p><strong>Commercial Bank of Ethiopia</strong><br>
+                            Account: KG Grocery Delivery<br>
+                            Number: 1000023456789</p>
+                            <p><strong>Bank of Abyssinia</strong><br>
+                            Account: KG Grocery<br>
+                            Number: 2000012345678</p>
+                            <p><strong>Amount to transfer: ${total} Birr</strong></p>
+                            <button class="copy-btn" onclick="copyAccount('1000023456789')">Copy CBE Account</button>
+                            <button class="copy-btn" onclick="copyAccount('2000012345678')">Copy BoA Account</button>
+                            <p style="margin-top:1rem;">After transfer, click "Place order" and we'll confirm manually.</p>
                         </div>
                     `;
                 } else if (method === 'cash') {
                     html = `
                         <div class="cash-info">
-                            <h4 style="margin-bottom:0.5rem;">Cash on Delivery</h4>
+                            <h4>Cash on Delivery</h4>
                             <p><i class="fas fa-check-circle" style="color:#2b7a4b;"></i> Pay when your order arrives.</p>
-                            <p>Please have exact change if possible.</p>
+                            <p>Our delivery person will carry change, but exact amount is appreciated.</p>
+                            <p>Total to pay: <strong id="cashAmount">${document.getElementById('order_total')?.value || '0'} Birr</strong></p>
                         </div>
                     `;
                 }
                 detailsDiv.innerHTML = html;
             }
 
-            window.copyAccount = function() {
-                const account = "1000023456789";
+            window.copyAccount = function(account) {
                 navigator.clipboard.writeText(account).then(() => {
                     alert("Account number copied!");
                 });
@@ -1545,18 +1584,34 @@
             window.placeOrder = function() {
                 const method = document.getElementById('payment_method').value;
                 const total = document.getElementById('order_total').value;
-                let message = `Total: ${total} Birr. `;
-                
-                if (method === 'telebirr') {
-                    message += 'Redirecting to Telebirr... (demo)';
-                } else if (method === 'bank') {
-                    message += 'Order placed! Please complete bank transfer of ' + total + ' Birr.';
-                } else {
-                    message += 'Order placed! Pay ' + total + ' Birr when you receive your groceries.';
+                const user = getCurrentUser();
+                if (!user) {
+                    alert('Please login first.');
+                    return;
                 }
                 
-                alert(message);
-                // Here you would normally submit the form data to your backend
+                // Create a mock order
+                const order = {
+                    id: 'ORD-' + Math.floor(Math.random() * 1000),
+                    date: new Date().toISOString().split('T')[0],
+                    total: total,
+                    status: 'pending',
+                    payment: method,
+                    items: cart // current cart items
+                };
+                
+                // Save order to localStorage (you'd normally have an array of orders per user)
+                let userOrders = JSON.parse(localStorage.getItem('kgOrders_' + user.phone)) || [];
+                userOrders.push(order);
+                localStorage.setItem('kgOrders_' + user.phone, JSON.stringify(userOrders));
+                
+                // Clear cart
+                cart = [];
+                saveCart();
+                updateCartDisplay();
+                
+                alert(`Order placed! Your order number is ${order.id}. Redirecting to profile...`);
+                window.location.href = 'profile.html#orders';
             };
 
             // Load cart on page load
