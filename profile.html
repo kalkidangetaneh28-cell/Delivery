@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Copy all styles from your index.html here (the full <style> block) */
-        /* I'll include only the new profile-specific styles below – please keep your existing styles */
         * {
             margin: 0;
             padding: 0;
@@ -224,12 +222,29 @@
             padding: 2rem;
             color: #888;
         }
+        .delete-order-btn {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        .delete-order-btn:hover {
+            background: #cc0000;
+        }
         .footer {
             background: #1e2a2f;
             color: #eaecf0;
             padding: 2rem 0;
             text-align: center;
             margin-top: 3rem;
+        }
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
         .footer-links {
             display: flex;
@@ -323,7 +338,7 @@
                 </div>
                 <div class="profile-content" id="settingsContent" style="display: none;">
                     <h2>Account Settings</h2>
-                    <p>You can change your name and phone here (demo).</p>
+                    <p>You can change your name here (phone is fixed).</p>
                     <form id="settingsForm">
                         <div class="form-group" style="margin-bottom: 1rem;">
                             <label>Full Name</label>
@@ -366,8 +381,17 @@
         // Get user from localStorage
         const user = JSON.parse(localStorage.getItem('kgCurrentUser'));
         if (!user) {
-            // If not logged in, redirect to home
             window.location.href = 'index.html';
+        }
+
+        // Load orders for this user
+        function getUserOrders() {
+            const ordersJson = localStorage.getItem('kgOrders_' + user.phone);
+            return ordersJson ? JSON.parse(ordersJson) : [];
+        }
+
+        function saveUserOrders(orders) {
+            localStorage.setItem('kgOrders_' + user.phone, JSON.stringify(orders));
         }
 
         // Display user info
@@ -377,35 +401,58 @@
         document.getElementById('settingsName').value = user.name;
         document.getElementById('settingsPhone').value = user.phone;
 
-        // Mock orders data (in real app, this would come from localStorage or server)
-        const mockOrders = [
-            { id: 'ORD-001', date: '2025-03-12', total: 450, status: 'delivered' },
-            { id: 'ORD-002', date: '2025-03-10', total: 280, status: 'pending' },
-            { id: 'ORD-003', date: '2025-03-05', total: 620, status: 'delivered' }
-        ];
-
-        function renderOrders(containerId, limit) {
+        function renderOrders(containerId, limit, showDelete = false) {
             const container = document.getElementById(containerId);
-            const ordersToShow = limit ? mockOrders.slice(0, limit) : mockOrders;
+            const allOrders = getUserOrders();
+            const sorted = allOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
+            const ordersToShow = limit ? sorted.slice(0, limit) : sorted;
+
             if (ordersToShow.length === 0) {
                 container.innerHTML = '<p class="no-orders">No orders found.</p>';
                 return;
             }
-            let html = '<table class="orders-table"><thead><tr><th>Order #</th><th>Date</th><th>Total</th><th>Status</th></tr></thead><tbody>';
+
+            let html = '<table class="orders-table"><thead><tr><th>Order #</th><th>Date</th><th>Total</th><th>Payment</th><th>Status</th>';
+            if (showDelete) html += '<th>Action</th>';
+            html += '</tr></thead><tbody>';
+
             ordersToShow.forEach(order => {
                 html += `<tr>
                     <td>${order.id}</td>
                     <td>${order.date}</td>
                     <td>${order.total} Birr</td>
-                    <td><span class="status-badge status-${order.status}">${order.status}</span></td>
-                </tr>`;
+                    <td>${order.payment}</td>
+                    <td><span class="status-badge status-${order.status}">${order.status}</span></td>`;
+                if (showDelete) {
+                    html += `<td><button class="delete-order-btn" data-order-id="${order.id}"><i class="fas fa-trash"></i> Delete</button></td>`;
+                }
+                html += '</tr>';
             });
             html += '</tbody></table>';
             container.innerHTML = html;
+
+            if (showDelete) {
+                document.querySelectorAll('.delete-order-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        const orderId = this.dataset.orderId;
+                        if (confirm('Are you sure you want to delete this order?')) {
+                            deleteOrder(orderId);
+                        }
+                    });
+                });
+            }
+        }
+
+        function deleteOrder(orderId) {
+            const orders = getUserOrders();
+            const updatedOrders = orders.filter(o => o.id !== orderId);
+            saveUserOrders(updatedOrders);
+            renderOrders('recentOrders', 2);
+            renderOrders('allOrders', null, true);
         }
 
         renderOrders('recentOrders', 2);
-        renderOrders('allOrders');
+        renderOrders('allOrders', null, true);
 
         // Tab switching
         const tabs = {
@@ -413,6 +460,7 @@
             orders: document.getElementById('ordersContent'),
             settings: document.getElementById('settingsContent')
         };
+
         document.getElementById('dashboardTab').addEventListener('click', (e) => {
             e.preventDefault();
             document.querySelectorAll('.profile-menu a').forEach(a => a.classList.remove('active'));
@@ -420,6 +468,7 @@
             Object.values(tabs).forEach(tab => tab.style.display = 'none');
             tabs.dashboard.style.display = 'block';
         });
+
         document.getElementById('ordersTab').addEventListener('click', (e) => {
             e.preventDefault();
             document.querySelectorAll('.profile-menu a').forEach(a => a.classList.remove('active'));
@@ -427,6 +476,7 @@
             Object.values(tabs).forEach(tab => tab.style.display = 'none');
             tabs.orders.style.display = 'block';
         });
+
         document.getElementById('settingsTab').addEventListener('click', (e) => {
             e.preventDefault();
             document.querySelectorAll('.profile-menu a').forEach(a => a.classList.remove('active'));
@@ -435,22 +485,20 @@
             tabs.settings.style.display = 'block';
         });
 
-        // Handle settings form
+        // Settings form
         document.getElementById('settingsForm').addEventListener('submit', (e) => {
             e.preventDefault();
             const newName = document.getElementById('settingsName').value.trim();
             if (newName) {
                 user.name = newName;
                 localStorage.setItem('kgCurrentUser', JSON.stringify(user));
-                // Update displayed name
                 document.getElementById('profileName').textContent = newName;
                 document.getElementById('welcomeName').textContent = newName;
                 alert('Profile updated successfully!');
             }
         });
 
-        // Logout button (if exists in this page, we need to add it to navbar? Actually we can reuse the one from index but here we need to add it manually because navbar is static)
-        // For simplicity, we'll add logout handler to a button if present
+        // Logout
         const logoutBtn = document.getElementById('logoutBtn');
         if (logoutBtn) {
             logoutBtn.addEventListener('click', () => {
@@ -459,7 +507,6 @@
             });
         }
 
-        // Hamburger mock
         document.querySelector('.hamburger')?.addEventListener('click', () => {
             alert('Mobile menu would open here');
         });
