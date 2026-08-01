@@ -1,1662 +1,449 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KG Grocery Delivery | Debre Markos – shop by category</title>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fresh Delivery - Shopping Cart</title>
     <style>
-        /* (all previous styles remain exactly the same) */
+        /* ---------- Reset & Base ---------- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
         body {
-            background-color: #fefefe;
-            color: #1e2a2f;
-            line-height: 1.6;
+            background: #f8f9fa;
+            color: #333;
+            padding: 20px;
         }
+
         .container {
-            width: 90%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 1rem;
-        }
-        .navbar {
-            background-color: #ffffff;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            padding: 1rem 0;
-        }
-        .navbar .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #2b7a4b;
-            letter-spacing: -0.5px;
-        }
-        .logo span {
-            color: #2c3e50;
-            font-weight: 400;
-            font-size: 1rem;
-            margin-left: 4px;
-        }
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-        .nav-links a {
-            text-decoration: none;
-            font-weight: 500;
-            color: #2c3e50;
-            transition: color 0.2s;
-            font-size: 1rem;
-        }
-        .nav-links a:hover {
-            color: #2b7a4b;
-        }
-        .auth-btn {
-            background: #2b7a4b;
-            color: white;
-            border: none;
-            padding: 0.5rem 1.5rem;
-            border-radius: 30px;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background 0.2s;
-        }
-        .auth-btn:hover {
-            background: #1e5f38;
-        }
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        .user-info span {
-            font-weight: 600;
-            color: #2b7a4b;
-        }
-        .logout-btn {
-            background: transparent;
-            border: 2px solid #2b7a4b;
-            color: #2b7a4b;
-            padding: 0.3rem 1rem;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .logout-btn:hover {
-            background: #2b7a4b;
-            color: white;
-        }
-        .hamburger {
-            display: none;
-            font-size: 1.8rem;
-            cursor: pointer;
-            color: #2c3e50;
-        }
-        .hero {
-            background: linear-gradient(135deg, #e8f5e9 0%, #f1f9f0 100%);
-            padding: 4rem 0;
-            border-bottom: 1px solid #c8e6c9;
-        }
-        .hero .container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 2rem;
-        }
-        .hero-content {
-            flex: 1 1 400px;
-        }
-        .hero-content h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            line-height: 1.2;
-            color: #1e2a2f;
-        }
-        .hero-content .highlight {
-            color: #2b7a4b;
-        }
-        .hero-content p {
-            margin: 1.5rem 0 2rem;
-            font-size: 1.2rem;
-            color: #3a5a4a;
-            max-width: 500px;
-        }
-        .btn {
-            display: inline-block;
-            background-color: #2b7a4b;
-            color: white;
-            padding: 0.9rem 2rem;
-            border-radius: 40px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: background-color 0.2s, transform 0.1s;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-        .btn:hover {
-            background-color: #1e5f38;
-            transform: scale(1.02);
-        }
-        .btn-outline {
-            background-color: transparent;
-            color: #2b7a4b;
-            border: 2px solid #2b7a4b;
-            margin-left: 1rem;
-        }
-        .btn-outline:hover {
-            background-color: #2b7a4b;
-            color: white;
-        }
-        .hero-image {
-            flex: 1 1 300px;
-            text-align: center;
-        }
-        .hero-image i {
-            font-size: 15rem;
-            color: #2b7a4b;
-            opacity: 0.8;
-        }
-        section {
-            padding: 5rem 0;
-        }
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: #1e2a2f;
-        }
-        .section-subtitle {
-            text-align: center;
-            font-size: 1.1rem;
-            color: #4a6b5a;
-            max-width: 700px;
-            margin: 0 auto 3rem;
-        }
-        .about-text {
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
-            font-size: 1.2rem;
-            color: #2c3e50;
-            background: #edf7ed;
-            padding: 2.5rem;
-            border-radius: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-        }
-        .about-text i {
-            color: #2b7a4b;
-            margin-right: 8px;
-        }
-        .category-tabs {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 2.5rem;
-        }
-        .category-btn {
-            background: white;
-            border: 2px solid #c8e6c9;
-            color: #1e2a2f;
-            padding: 0.8rem 2rem;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .category-btn:hover {
-            background: #e8f5e9;
-            border-color: #2b7a4b;
-        }
-        .category-btn.active {
-            background: #2b7a4b;
-            border-color: #2b7a4b;
-            color: white;
-        }
-        .grocery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1rem;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
         }
-        .grocery-item {
-            background: white;
-            padding: 1.5rem 1rem;
-            border-radius: 20px;
-            box-shadow: 0 8px 20px rgba(43, 122, 75, 0.05);
-            text-align: center;
-            transition: transform 0.2s, box-shadow 0.2s;
-            border: 1px solid #c8e6c9;
-        }
-        .grocery-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 16px 30px rgba(43, 122, 75, 0.15);
-        }
-        .grocery-item i {
-            font-size: 2.8rem;
-            color: #2b7a4b;
-            margin-bottom: 0.8rem;
-        }
-        .grocery-item h4 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #1e2a2f;
-            margin-bottom: 0.3rem;
-        }
-        .grocery-item p {
-            color: #4a6b5a;
-            font-size: 0.9rem;
-        }
-        .add-to-cart-btn {
-            background: #2b7a4b;
+
+        /* ---------- Header ---------- */
+        header {
+            grid-column: 1 / -1;
+            background: #2e7d32;
             color: white;
-            border: none;
-            padding: 0.3rem 1rem;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            margin-top: 0.5rem;
-        }
-        .add-to-cart-btn:hover {
-            background: #1e5f38;
-        }
-        .grocery-item.hidden {
-            display: none;
-        }
-        .track-section {
-            background: #edf7ed;
-        }
-        .track-card {
-            background: white;
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 2.5rem;
-            border-radius: 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
-            text-align: center;
-        }
-        .track-card h3 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-        .track-form {
+            padding: 20px 30px;
+            border-radius: 12px;
             display: flex;
+            justify-content: space-between;
+            align-items: center;
             flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 2rem;
-            justify-content: center;
         }
-        .track-form input {
-            flex: 2 1 250px;
-            padding: 1rem 1.5rem;
-            border: 2px solid #c8e6c9;
-            border-radius: 50px;
-            font-size: 1rem;
-            outline: none;
-            transition: border 0.2s;
-        }
-        .track-form input:focus {
-            border-color: #2b7a4b;
-        }
-        .track-form button {
-            flex: 0 1 auto;
-            padding: 1rem 2.5rem;
-            border-radius: 50px;
-            border: none;
-            background: #2b7a4b;
-            color: white;
+
+        header h1 {
+            font-size: 28px;
             font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.2s;
         }
-        .track-form button:hover {
-            background: #1e5f38;
-        }
-        .mock-result {
-            margin-top: 2rem;
-            color: #2c3e50;
-            font-weight: 500;
-            background: #edf7ed;
-            padding: 1rem;
-            border-radius: 60px;
-            display: none;
-        }
-        .mock-result.show {
-            display: block;
-        }
-        .order-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 3rem;
-            margin-top: 3rem;
-        }
-        .contact-info {
-            flex: 1 1 300px;
-            background: #edf7ed;
-            padding: 2rem;
+
+        header .cart-icon {
+            background: white;
+            color: #2e7d32;
+            padding: 8px 18px;
             border-radius: 30px;
-        }
-        .contact-info h4 {
-            font-size: 1.8rem;
-            margin-bottom: 2rem;
-        }
-        .info-item {
+            font-weight: 600;
+            font-size: 18px;
             display: flex;
             align-items: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: 8px;
         }
-        .info-item i {
-            font-size: 1.8rem;
-            color: #2b7a4b;
-            width: 40px;
+
+        header .cart-icon span {
+            background: #ff5722;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 10px;
+            font-size: 16px;
         }
-        .info-item p {
-            font-size: 1.1rem;
-            color: #2c3e50;
+
+        /* ---------- Product Grid ---------- */
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
         }
-        .order-form {
-            flex: 2 1 400px;
+
+        .product-card {
             background: white;
-            padding: 2rem;
-            border-radius: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            border-radius: 12px;
+            padding: 20px 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.2s;
+            border: 1px solid #e9ecef;
         }
-        .order-form h4 {
-            font-size: 1.8rem;
-            margin-bottom: 1.8rem;
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
-        .form-group {
-            margin-bottom: 1.5rem;
+
+        .product-card .emoji {
+            font-size: 48px;
+            margin-bottom: 10px;
         }
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 1rem 1.2rem;
-            border: 2px solid #c8e6c9;
-            border-radius: 20px;
-            font-size: 1rem;
-            outline: none;
-            transition: border 0.2s;
+
+        .product-card h3 {
+            font-size: 18px;
+            margin-bottom: 6px;
         }
-        .form-group input:focus,
-        .form-group textarea:focus {
-            border-color: #2b7a4b;
+
+        .product-card .price {
+            color: #2e7d32;
+            font-weight: 700;
+            font-size: 20px;
+            margin-bottom: 14px;
         }
-        .form-group textarea {
-            min-height: 100px;
-            resize: vertical;
+
+        .product-card .price span {
+            font-weight: 400;
+            font-size: 14px;
+            color: #888;
         }
-        .order-form button {
-            background: #2b7a4b;
+
+        .add-to-cart-btn {
+            background: #2e7d32;
             color: white;
             border: none;
-            padding: 1rem 2.5rem;
-            border-radius: 40px;
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-size: 16px;
             font-weight: 600;
-            font-size: 1.1rem;
             cursor: pointer;
             transition: background 0.2s;
+            width: 100%;
         }
-        .order-form button:hover {
-            background: #1e5f38;
+
+        .add-to-cart-btn:hover {
+            background: #1b5e20;
         }
-        .delivery-note {
-            margin-top: 2rem;
-            background: #e8f5e9;
-            padding: 1.5rem;
-            border-radius: 30px;
-            text-align: center;
-            font-weight: 500;
-            color: #1e3a2a;
-            border: 1px dashed #2b7a4b;
+
+        .add-to-cart-btn:active {
+            transform: scale(0.96);
         }
-        .delivery-note i {
-            color: #2b7a4b;
-            margin-right: 0.5rem;
-        }
-        .cart-container {
+
+        /* ---------- Cart Sidebar ---------- */
+        .cart-sidebar {
             background: white;
-            border-radius: 20px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.03);
-            border: 1px solid #c8e6c9;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e9ecef;
+            position: sticky;
+            top: 20px;
+            max-height: calc(100vh - 120px);
+            display: flex;
+            flex-direction: column;
         }
-        .cart-container h3 {
-            margin-bottom: 1rem;
-            color: #1e2a2f;
+
+        .cart-sidebar h2 {
+            font-size: 22px;
+            border-bottom: 2px solid #f1f3f5;
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
         }
+
+        .cart-sidebar h2 small {
+            font-size: 16px;
+            font-weight: 400;
+            color: #888;
+        }
+
         #cart-items {
-            margin-bottom: 1rem;
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 16px;
+            padding-right: 4px;
         }
+
+        .empty-cart {
+            color: #999;
+            font-style: italic;
+            text-align: center;
+            padding: 30px 0;
+        }
+
         .cart-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.8rem 0;
-            border-bottom: 1px dashed #e0e0e0;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f3f5;
         }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
         .cart-item-info {
-            flex: 2;
+            display: flex;
+            flex-direction: column;
         }
+
         .cart-item-name {
             font-weight: 600;
         }
+
         .cart-item-price {
-            color: #2b7a4b;
-            font-weight: 500;
+            font-size: 14px;
+            color: #555;
         }
+
         .cart-item-actions {
             display: flex;
-            gap: 0.5rem;
             align-items: center;
+            gap: 8px;
         }
+
         .cart-item-actions button {
-            background: #f0f0f0;
+            background: #e9ecef;
             border: none;
-            width: 30px;
-            height: 30px;
             border-radius: 50%;
-            font-weight: bold;
+            width: 28px;
+            height: 28px;
+            font-size: 18px;
+            font-weight: 700;
             cursor: pointer;
-            color: #1e2a2f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
         }
+
         .cart-item-actions button:hover {
-            background: #2b7a4b;
-            color: white;
+            background: #dee2e6;
         }
+
+        .cart-item-actions button:active {
+            transform: scale(0.92);
+        }
+
         .cart-item-actions span {
-            min-width: 30px;
+            min-width: 24px;
             text-align: center;
+            font-weight: 600;
         }
-        .empty-cart {
-            color: #888;
-            font-style: italic;
-            padding: 1rem 0;
-            text-align: center;
-        }
+
         .cart-total {
+            border-top: 2px solid #f1f3f5;
+            padding-top: 16px;
+            font-size: 20px;
+            font-weight: 700;
             display: flex;
             justify-content: space-between;
+        }
+
+        .cart-total span {
+            color: #2e7d32;
+        }
+
+        .checkout-btn {
+            background: #ff5722;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 30px;
+            font-size: 18px;
             font-weight: 700;
-            font-size: 1.3rem;
-            border-top: 2px solid #2b7a4b;
-            padding-top: 1rem;
-        }
-        .payment-methods {
-            display: flex;
-            gap: 1rem;
-            margin: 0.5rem 0 1rem;
-            flex-wrap: wrap;
-        }
-        .method-card {
-            flex: 1;
-            min-width: 100px;
-            background: white;
-            border: 2px solid #c8e6c9;
-            border-radius: 16px;
-            padding: 1rem 0.5rem;
-            text-align: center;
             cursor: pointer;
-            transition: all 0.2s;
+            margin-top: 14px;
+            transition: background 0.2s;
         }
-        .method-card.selected {
-            border-color: #2b7a4b;
-            background: #e8f5e9;
+
+        .checkout-btn:hover {
+            background: #e64a19;
         }
-        .method-card i {
-            font-size: 2rem;
-            color: #2b7a4b;
-            display: block;
-            margin-bottom: 0.3rem;
+
+        .checkout-btn:active {
+            transform: scale(0.97);
         }
-        .method-card span {
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-        .payment-details {
-            background: #f9f9f9;
-            border-radius: 16px;
-            padding: 1.2rem;
-            margin: 1rem 0;
-            min-height: 100px;
-        }
-        .bank-details {
-            background: white;
-            padding: 1rem;
-            border-radius: 12px;
-            border: 1px solid #e0e0e0;
-            font-size: 0.95rem;
-        }
-        .copy-btn {
-            background: #2b7a4b;
-            color: white;
-            border: none;
-            padding: 0.5rem 1.2rem;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            margin-top: 0.5rem;
-        }
-        .telebirr-info, .cash-info {
-            background: white;
-            padding: 1rem;
-            border-radius: 12px;
-            border-left: 4px solid #2b7a4b;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-        .modal.active {
-            display: flex;
-        }
-        .modal-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 30px;
-            max-width: 400px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        .modal-tabs {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        .modal-tab {
-            flex: 1;
-            padding: 0.8rem;
-            background: #f0f0f0;
-            border: none;
-            border-radius: 30px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .modal-tab.active {
-            background: #2b7a4b;
-            color: white;
-        }
-        .auth-form {
-            display: none;
-        }
-        .auth-form.active {
-            display: block;
-        }
-        .auth-form input {
-            width: 100%;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border: 2px solid #c8e6c9;
-            border-radius: 20px;
-            font-size: 1rem;
-        }
-        .auth-form button {
-            width: 100%;
-            background: #2b7a4b;
-            color: white;
-            border: none;
-            padding: 1rem;
-            border-radius: 30px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .auth-error {
-            color: #c44536;
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
-        }
-        .login-required {
-            text-align: center;
-            padding: 2rem;
-            background: #f9f9f9;
-            border-radius: 20px;
-            margin: 2rem 0;
-        }
-        .login-required i {
-            font-size: 3rem;
-            color: #2b7a4b;
-            margin-bottom: 1rem;
-        }
-        .login-required p {
-            font-size: 1.2rem;
-            color: #1e2a2f;
-        }
-        .login-required button {
-            background: #2b7a4b;
-            color: white;
-            border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 30px;
-            font-weight: 600;
-            margin-top: 1rem;
-            cursor: pointer;
-        }
-        .footer {
-            background: #1e2a2f;
-            color: #eaecf0;
-            padding: 2rem 0;
-            text-align: center;
-        }
-        .footer .container {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        .footer-links {
-            display: flex;
-            gap: 2rem;
-            justify-content: center;
-            list-style: none;
-            margin: 1rem 0;
-        }
-        .footer-links a {
-            color: #eaecf0;
-            text-decoration: none;
-        }
-        .footer-links a:hover {
-            color: #2b7a4b;
-        }
-        .social-icons {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-        .social-icons a {
-            color: #eaecf0;
-        }
-        .social-icons a:hover {
-            color: #2b7a4b;
-        }
-        hr {
-            border: 0.5px solid #4a6b5a;
-            margin: 1.5rem 0 1rem;
-        }
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 800px) {
+            .container {
+                grid-template-columns: 1fr;
             }
-            .hamburger {
-                display: block;
-            }
-            .hero-content h1 {
-                font-size: 2.5rem;
-            }
-            .hero-image i {
-                font-size: 10rem;
-            }
-            .btn-outline {
-                margin-left: 0;
-                margin-top: 1rem;
-            }
-            .hero .container {
-                text-align: center;
-                justify-content: center;
-            }
-            .section-title {
-                font-size: 2rem;
-            }
-        }
-        @media (max-width: 480px) {
-            .hero-content h1 {
-                font-size: 2rem;
+            .cart-sidebar {
+                position: static;
+                max-height: none;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="logo">KG <span>Grocery</span></div>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#groceries">Groceries</a></li>
-                <li><a href="#track">Track</a></li>
-                <li><a href="#order">Order</a></li>
-                <!-- <li><a href="profile.html">Profile</a></li> -->
-            </ul>
-            <div class="user-info" id="userInfo" style="display: none;">
-                <span id="userName"></span>
-                <button class="logout-btn" id="logoutBtn">Logout</button>
-            </div>
-            <button class="auth-btn" id="loginBtn">Login / Register</button>
-            <div class="hamburger">☰</div>
-        </div>
-    </nav>
 
-    <!-- Hero / Home -->
-    <section class="hero" id="home">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Fresh groceries delivered to your door in <span class="highlight">Debre Markos</span></h1>
-                <p>KG Grocery brings you a huge variety – from farm-fresh produce to dairy, meat, spices, and traditional staples. Order now and get delivery within 24 hour.</p>
-                <div>
-                    <a href="#order" class="btn">Order now</a>
-                    <a href="#groceries" class="btn btn-outline">Browse groceries</a>
-                </div>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>🌿 Fresh Delivery</h1>
+            <div class="cart-icon">
+                🛒 Cart
+                <span id="cart-count">0</span>
             </div>
-            <div class="hero-image">
-                <i class="fas fa-shopping-basket"></i>
-            </div>
-        </div>
-    </section>
+        </header>
 
-    <!-- About Section -->
-    <section id="about">
-        <div class="container">
-            <h2 class="section-title">About KG Grocery</h2>
-            <p class="section-subtitle">Your neighbourhood grocery partner</p>
-            <div class="about-text">
-                <i class="fas fa-leaf"></i> We are a Debre Markos based delivery service dedicated to bringing you the freshest fruits, vegetables, and daily essentials. We hand-pick every item from trusted local suppliers and deliver within hours. No minimum order, no hidden fees — just good food, fast.
-            </div>
-        </div>
-    </section>
-
-    <!-- GROCERIES SECTION with category tabs -->
-    <section id="groceries">
-        <div class="container">
-            <h2 class="section-title">Shop by category</h2>
-            <p class="section-subtitle">Click a category to see the items</p>
-            
-            <!-- Category filter buttons -->
-            <div class="category-tabs">
-                <button class="category-btn active" data-category="all">All</button>
-                <button class="category-btn" data-category="fruits">Fruits</button>
-                <button class="category-btn" data-category="vegetables">Vegetables</button>
-                <button class="category-btn" data-category="dairy">Dairy & Eggs</button>
-                <button class="category-btn" data-category="bakery">Bakery</button>
-                <button class="category-btn" data-category="meat">Meat & Fish</button>
-                <button class="category-btn" data-category="pantry">Pantry</button>
-            </div>
-
-            <!-- Grocery items grid (same as before) -->
-            <div class="grocery-grid" id="groceryGrid">
-                <!-- Fruits -->
-                <div class="grocery-item" data-category="fruits" data-name="Apples" data-price="80">
-                    <i class="fas fa-apple-alt"></i>
-                    <h4>Apples</h4>
-                    <p>fresh, imported · <strong>80 Birr/kg</strong></p>
+        <!-- Product List -->
+        <section>
+            <div class="products" id="product-list">
+                <!-- Each product card calls addToCart(name, price) -->
+                <div class="product-card">
+                    <div class="emoji">🍎</div>
+                    <h3>Apples</h3>
+                    <div class="price">80 <span>Birr</span></div>
                     <button class="add-to-cart-btn" onclick="addToCart('Apples', 80)">+ Add</button>
                 </div>
-                <div class="grocery-item" data-category="fruits" data-name="Bananas" data-price="60">
-                    <i class="fas fa-apple-alt"></i>
-                    <h4>Bananas</h4>
-                    <p>sweet & ripe · <strong>60 Birr/kg</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Bananas', 60)">+ Add</button>
-                </div>
-                <div class="grocery-item" data-category="fruits" data-name="Lemons" data-price="50">
-                    <i class="fas fa-lemon"></i>
-                    <h4>Lemons</h4>
-                    <p>juicy, local · <strong>50 Birr/kg</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Lemons', 50)">+ Add</button>
-                </div>
-                <div class="grocery-item" data-category="fruits" data-name="Oranges" data-price="70">
-                    <i class="fas fa-apple-alt"></i>
-                    <h4>Oranges</h4>
-                    <p>seedless · <strong>70 Birr/kg</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Oranges', 70)">+ Add</button>
-                </div>
-                <!-- Vegetables -->
-                <div class="grocery-item" data-category="vegetables" data-name="Carrots" data-price="40">
-                    <i class="fas fa-carrot"></i>
-                    <h4>Carrots</h4>
-                    <p>crunchy · <strong>40 Birr/kg</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Carrots', 40)">+ Add</button>
-                </div>
-                <div class="grocery-item" data-category="vegetables" data-name="Tomatoes" data-price="60">
-                    <i class="fas fa-pepper-hot"></i>
-                    <h4>Tomatoes</h4>
-                    <p>vine‑ripened · <strong>60 Birr/kg</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Tomatoes', 60)">+ Add</button>
-                </div>
-                <div class="grocery-item" data-category="vegetables" data-name="Onions" data-price="45">
-                    <i class="fas fa-pepper-hot"></i>
-                    <h4>Onions</h4>
-                    <p>red & white · <strong>45 Birr/kg</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Onions', 45)">+ Add</button>
-                </div>
-                <div class="grocery-item" data-category="vegetables" data-name="Potatoes" data-price="35">
-                    <i class="fas fa-seedling"></i>
-                    <h4>Potatoes</h4>
-                    <p>fresh harvest · <strong>35 Birr/kg</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Potatoes', 35)">+ Add</button>
-                </div>
-                <div class="grocery-item" data-category="vegetables" data-name="Lettuce" data-price="30">
-                    <i class="fas fa-leaf"></i>
-                    <h4>Lettuce</h4>
-                    <p>crisp · <strong>30 Birr/head</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Lettuce', 30)">+ Add</button>
-                </div>
-                <div class="grocery-item" data-category="vegetables" data-name="Green peppers" data-price="55">
-                    <i class="fas fa-pepper-hot"></i>
-                    <h4>Green peppers</h4>
-                    <p>mild · <strong>55 Birr/kg</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Green peppers', 55)">+ Add</button>
-                </div>
-                <!-- Dairy & Eggs -->
-                <div class="grocery-item" data-category="dairy" data-name="Eggs" data-price="120">
-                    <i class="fas fa-egg"></i>
-                    <h4>Eggs</h4>
-                    <p>free‑range · <strong>120 Birr/dozen</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Eggs', 120)">+ Add</button>
-                </div>
-                <div class="grocery-item" data-category="dairy" data-name="Milk" data-price="65">
-                    <i class="fas fa-cheese"></i>
-                    <h4>Milk</h4>
-                    <p>fresh, 1L · <strong>65 Birr</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Milk', 65)">+ Add</button>
-                </div>
-                <div class="grocery-item" data-category="dairy" data-name="Yogurt" data-price="50">
-                    <i class="fas fa-cheese"></i>
-                    <h4>Yogurt</h4>
-                    <p>creamy · <strong>50 Birr</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Yogurt', 50)">+ Add</button>
-                </div>
-                <div class="grocery-item" data-category="dairy" data-name="Cheese" data-price="180">
-                    <i class="fas fa-cheese"></i>
-                    <h4>Cheese</h4>
-                    <p>local & imported · <strong>180 Birr/kg</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Cheese', 180)">+ Add</button>
-                </div>
-                <!-- Bakery -->
-                <div class="grocery-item" data-category="bakery" data-name="Injera" data-price="25">
-                    <i class="fas fa-bread-slice"></i>
-                    <h4>Injera</h4>
-                    <p>fresh daily · <strong>25 Birr/roll</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Injera', 25)">+ Add</button>
-                </div>
-                <div class="grocery-item" data-category="bakery" data-name="White bread" data-price="35">
-                    <i class="fas fa-bread-slice"></i>
-                    <h4>White bread</h4>
-                    <p>soft · <strong>35 Birr</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('White bread', 35)">+ Add</button>
-                </div>
-                <div class="grocery-item" data-category="bakery" data-name="Whole wheat" data-price="40">
-                    <i class="fas fa-bread-slice"></i>
-                    <h4>Whole wheat</h4>
-                    <p>healthy · <strong>40 Birr</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Whole wheat', 40)">+ Add</button>
-                </div>
-                <!-- Meat & Fish -->
-                <div class="grocery-item" data-category="meat" data-name="Chicken" data-price="250">
-                    <i class="fas fa-drumstick-bite"></i>
-                    <h4>Chicken</h4>
-                    <p>fresh, whole · <strong>250 Birr/kg</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Chicken', 250)">+ Add</button>
-                </div>
-                <div class="grocery-item" data-category="meat" data-name="Tilapia" data-price="200">
-                    <i class="fas fa-fish"></i>
-                    <h4>Tilapia</h4>
-                    <p>fresh · <strong>200 Birr/kg</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Tilapia', 200)">+ Add</button>
-                </div>
-                <div class="grocery-item" data-category="meat" data-name="Beef" data-price="350">
-                    <i class="fas fa-drumstick-bite"></i>
-                    <h4>Beef</h4>
-                    <p>lean cuts · <strong>350 Birr/kg</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Beef', 350)">+ Add</button>
-                </div>
-                <!-- Pantry -->
-                <div class="grocery-item" data-category="pantry" data-name="Cooking oil" data-price="120">
-                    <i class="fas fa-wine-bottle"></i>
-                    <h4>Cooking oil</h4>
-                    <p>1L, 2L · <strong>120 Birr/L</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Cooking oil', 120)">+ Add</button>
-                </div>
-                <div class="grocery-item" data-category="pantry" data-name="Rice" data-price="150">
-                    <i class="fas fa-wine-bottle"></i>
-                    <h4>Rice</h4>
-                    <p>imported · <strong>150 Birr/kg</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Rice', 150)">+ Add</button>
-                </div>
-                <div class="grocery-item" data-category="pantry" data-name="Pasta" data-price="90">
-                    <i class="fas fa-wine-bottle"></i>
-                    <h4>Pasta</h4>
-                    <p>spaghetti · <strong>90 Birr/kg</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Pasta', 90)">+ Add</button>
-                </div>
-                <div class="grocery-item" data-category="pantry" data-name="Sugar" data-price="80">
-                    <i class="fas fa-wine-bottle"></i>
-                    <h4>Sugar</h4>
-                    <p>white · <strong>80 Birr/kg</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Sugar', 80)">+ Add</button>
-                </div>
-                <div class="grocery-item" data-category="pantry" data-name="Coffee" data-price="300">
-                    <i class="fas fa-mug-hot"></i>
-                    <h4>Coffee</h4>
-                    <p>roasted beans · <strong>300 Birr/kg</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Coffee', 300)">+ Add</button>
-                </div>
-                <div class="grocery-item" data-category="pantry" data-name="Tea" data-price="50">
-                    <i class="fas fa-mug-hot"></i>
-                    <h4>Tea</h4>
-                    <p>black & herbal · <strong>50 Birr/box</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Tea', 50)">+ Add</button>
-                </div>
-                <div class="grocery-item" data-category="pantry" data-name="Flour" data-price="70">
-                    <i class="fas fa-wine-bottle"></i>
-                    <h4>Flour</h4>
-                    <p>teff, wheat · <strong>70 Birr/kg</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Flour', 70)">+ Add</button>
-                </div>
-                <div class="grocery-item" data-category="pantry" data-name="Spices" data-price="20">
-                    <i class="fas fa-wine-bottle"></i>
-                    <h4>Spices</h4>
-                    <p>berbere, etc. · <strong>20 Birr/pack</strong></p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Spices', 20)">+ Add</button>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Track Order Section (mock) -->
-    <section class="track-section" id="track">
-        <div class="container">
-            <div class="track-card">
-                <h3><i class="fas fa-search" style="color: #2b7a4b;"></i> Track your grocery order</h3>
-                <p>Enter your order number to see real‑time updates (demo)</p>
-                <div class="track-form">
-                    <input type="text" id="trackingInput" placeholder="e.g., KAL-12345" value="KAL-9876-DBR">
-                    <button id="trackBtn">Track</button>
-                </div>
-                <div id="mockResult" class="mock-result">
-                    <i class="fas fa-check-circle" style="color: #2e8b57;"></i> 
-                    Your order #KAL-9876-DBR is <strong>out for delivery</strong> and will arrive within 30 minutes.
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Order / Contact Section -->
-    <section id="order">
-        <div class="container">
-            <h2 class="section-title">Order groceries</h2>
-            <p class="section-subtitle">Tell us what you need and where to deliver — we’ll take care of the rest</p>
-            
-            <!-- Login required message (shown when not logged in) -->
-            <div id="loginRequiredMessage" class="login-required">
-                <i class="fas fa-lock"></i>
-                <p>Please log in or register to place an order.</p>
-                <button onclick="document.getElementById('loginBtn').click()">Login / Register</button>
-            </div>
-
-            <!-- Order content (shown only when logged in) -->
-            <div id="orderContent" style="display: none;">
-                <!-- Shopping Cart Summary -->
-                <div class="cart-container">
-                    <h3>Your Cart</h3>
-                    <div id="cart-items">
-                        <p class="empty-cart">Your cart is empty.</p>
-                    </div>
-                    <div class="cart-total">
-                        <span>Total:</span>
-                        <span id="cart-total-amount">0 Birr</span>
-                    </div>
+                <div class="product-card">
+                    <div class="emoji">🍌</div>
+                    <h3>Bananas</h3>
+                    <div class="price">50 <span>Birr</span></div>
+                    <button class="add-to-cart-btn" onclick="addToCart('Bananas', 50)">+ Add</button>
                 </div>
 
-                <div class="order-grid">
-                    <!-- left: contact info -->
-                    <div class="contact-info">
-                        <h4>KG Grocery <span style="color:#2b7a4b;">●</span></h4>
-                        <div class="info-item">
-                            <i class="fas fa-map-pin"></i>
-                            <p>Main office: Debre Markos,<br>Kebele 01, near Commercial Bank of Ethiopia,<br>Abima branch</p>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-phone-alt"></i>
-                            <p>+251 967 859 515 <br> +251 953 082 867</p>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-envelope"></i>
-                            <p>grocery@kg.et <br> order@kggrocery.com</p>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-clock"></i>
-                            <p>Mon–Fri: 12:00 AM – 2:00 AM &<br>10:30 AM – 12:30 PM<br>Sat & Sun: 12:00 AM – 12:00 PM</p>
-                        </div>
-                    </div>
+                <div class="product-card">
+                    <div class="emoji">🍊</div>
+                    <h3>Oranges</h3>
+                    <div class="price">60 <span>Birr</span></div>
+                    <button class="add-to-cart-btn" onclick="addToCart('Oranges', 60)">+ Add</button>
+                </div>
 
-                    <!-- right: order form -->
-                    <div class="order-form">
-                        <h4>Place your order</h4>
-                        <form id="orderForm" onsubmit="event.preventDefault(); placeOrder();">
-    <div class="form-group">
-        <input type="text" id="order_name" placeholder="Your full name" required>
-    </div>
-    <div class="form-group">
-        <input type="text" id="order_phone" placeholder="Phone number (for delivery updates)" required>
-    </div>
-    <div class="form-group">
-        <input type="email" id="order_email" placeholder="Email address (optional)">
-    </div>
-    <div class="form-group">
-        <input type="text" id="order_address" placeholder="Delivery address (house number, landmark, area)" required>
-    </div>
-    <div class="form-group">
-        <textarea id="order_details" placeholder="What would you like to order? (e.g., 2kg tomatoes, 1L milk, 1 loaf of bread)"></textarea>
-    </div>
-    
-    <!-- Payment method selection -->
-    <div class="form-group">
-        <label style="font-weight: 600; margin-bottom: 0.5rem; display: block;">Payment method</label>
-        <div class="payment-methods">
-            <div class="method-card" onclick="selectMethod('telebirr')">
-                <i class="fas fa-mobile-alt"></i>
-                <span>Telebirr</span>
+                <div class="product-card">
+                    <div class="emoji">🥑</div>
+                    <h3>Avocados</h3>
+                    <div class="price">120 <span>Birr</span></div>
+                    <button class="add-to-cart-btn" onclick="addToCart('Avocados', 120)">+ Add</button>
+                </div>
+
+                <div class="product-card">
+                    <div class="emoji">🥛</div>
+                    <h3>Milk (1L)</h3>
+                    <div class="price">90 <span>Birr</span></div>
+                    <button class="add-to-cart-btn" onclick="addToCart('Milk', 90)">+ Add</button>
+                </div>
+
+                <div class="product-card">
+                    <div class="emoji">🍞</div>
+                    <h3>Bread</h3>
+                    <div class="price">40 <span>Birr</span></div>
+                    <button class="add-to-cart-btn" onclick="addToCart('Bread', 40)">+ Add</button>
+                </div>
             </div>
-            <div class="method-card" onclick="selectMethod('bank')">
-                <i class="fas fa-university"></i>
-                <span>Bank Transfer</span>
+        </section>
+
+        <!-- Shopping Cart Sidebar -->
+        <aside class="cart-sidebar">
+            <h2>
+                Your Cart
+                <small id="item-count">0 items</small>
+            </h2>
+            <div id="cart-items">
+                <p class="empty-cart">Your cart is empty.</p>
             </div>
-            <div class="method-card" onclick="selectMethod('cash')">
-                <i class="fas fa-money-bill-wave"></i>
-                <span>Cash on Delivery</span>
+            <div class="cart-total">
+                Total: <span id="cart-total">0</span> Birr
             </div>
-        </div>
-        <input type="hidden" name="payment_method" id="payment_method" value="telebirr">
+            <button class="checkout-btn" onclick="alert('Proceed to checkout!')">🛒 Checkout</button>
+        </aside>
     </div>
 
-    <!-- Dynamic payment instructions -->
-    <div id="payment-details" class="payment-details"></div>
-
-    <div class="form-group">
-        <textarea id="order_instructions" placeholder="Additional instructions (gate color, preferred time, etc.)"></textarea>
-    </div>
-    
-    <button type="submit" class="btn" style="width: 100%;">Place order</button>
-</form>
-                    </div>
-                </div>
-                <!-- delivery note -->
-                <div class="delivery-note">
-                    <i class="fas fa-pen"></i> Please write your full address clearly. We deliver to every neighbourhood in Debre Markos.
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div style="font-size: 1.8rem; font-weight: 700;">KG <span style="color:#2b7a4b;">Grocery</span></div>
-            <ul class="footer-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#groceries">Groceries</a></li>
-                <li><a href="#track">Track</a></li>
-                <li><a href="#order">Order</a></li>
-            </ul>
-            <div class="social-icons">
-                <a href="https://www.telegram.com"><i class="fab fa-telegram"></i></a>
-                <a href="https://www.facebook.com/"><i class="fab fa-facebook"></i></a>
-                <a href="https://www.twitter.com"><i class="fab fa-twitter"></i></a>
-                <a href="https://www.instagram.com"><i class="fab fa-instagram"></i></a>
-            </div>
-            <hr>
-            <p>© 2025 KG Grocery Delivery — Debre Markos, Ethiopia. All rights reserved.</p>
-            <p style="font-size: 0.9rem; margin-top: 0.5rem;">🥦 Fresh from our family to yours</p>
-        </div>
-    </footer>
-
-    <!-- Auth Modal -->
-    <div class="modal" id="authModal">
-        <div class="modal-content">
-            <div class="modal-tabs">
-                <button class="modal-tab active" id="loginTab">Login</button>
-                <button class="modal-tab" id="registerTab">Register</button>
-            </div>
-            <div id="loginForm" class="auth-form active">
-                <input type="text" id="loginPhone" placeholder="Phone number (e.g., 0912345678 or +251912345678)">
-                <input type="password" id="loginPassword" placeholder="Password">
-                <button onclick="login()">Login</button>
-                <div id="loginError" class="auth-error"></div>
-            </div>
-            <div id="registerForm" class="auth-form">
-                <input type="text" id="regName" placeholder="Full name">
-                <input type="text" id="regPhone" placeholder="Phone number (e.g., 0912345678 or +251912345678)">
-                <input type="password" id="regPassword" placeholder="Password">
-                <button onclick="register()">Register</button>
-                <div id="registerError" class="auth-error"></div>
-            </div>
-        </div>
-    </div>
-
+    <!-- ============================================================ -->
+    <!--  JAVASCRIPT – The missing piece that makes the "Add" buttons work -->
+    <!-- ============================================================ -->
     <script>
-(function() {
-    // ---------- CATEGORY FILTERING ----------
-    const categoryBtns = document.querySelectorAll('.category-btn');
-    const groceryItems = document.querySelectorAll('.grocery-item');
+        // ---------- Cart Data ----------
+        let cart = []; // each item: { name, price, quantity }
 
-    function filterItems(category) {
-        groceryItems.forEach(item => {
-            if (category === 'all' || item.dataset.category === category) {
-                item.classList.remove('hidden');
+        // ---------- Add to Cart ----------
+        function addToCart(name, price) {
+            // Check if item already exists
+            const existing = cart.find(item => item.name === name);
+            if (existing) {
+                existing.quantity += 1;
             } else {
-                item.classList.add('hidden');
+                cart.push({ name, price, quantity: 1 });
             }
-        });
-    }
-
-    categoryBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            categoryBtns.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            filterItems(this.dataset.category);
-        });
-    });
-    filterItems('all');
-
-    // ---------- MOCK TRACKING ----------
-    const trackBtn = document.getElementById('trackBtn');
-    const input = document.getElementById('trackingInput');
-    const resultDiv = document.getElementById('mockResult');
-
-    trackBtn.addEventListener('click', function() {
-        let trackingNumber = input.value.trim();
-        if (trackingNumber === '') {
-            alert('Please enter a tracking number');
-            return;
-        }
-        resultDiv.innerHTML = `<i class="fas fa-check-circle" style="color: #2e8b57;"></i> 
-            Your order <strong>${trackingNumber}</strong> is out for delivery and will arrive within 30 minutes.`;
-        resultDiv.classList.add('show');
-    });
-
-    // ---------- HAMBURGER DEMO ----------
-    const hamburger = document.querySelector('.hamburger');
-    hamburger.addEventListener('click', function() {
-        alert('Mobile menu would open here — in a real site you’d show the nav links.');
-    });
-
-    // ---------- SMOOTH SCROLLING ----------
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
-    });
-
-    // ---------- AUTHENTICATION SYSTEM WITH PHONE VALIDATION ----------
-    const loginBtn = document.getElementById('loginBtn');
-    const authModal = document.getElementById('authModal');
-    const loginTab = document.getElementById('loginTab');
-    const registerTab = document.getElementById('registerTab');
-    const loginForm = document.getElementById('loginForm');
-    const registerForm = document.getElementById('registerForm');
-    const userInfo = document.getElementById('userInfo');
-    const userNameSpan = document.getElementById('userName');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const loginRequired = document.getElementById('loginRequiredMessage');
-    const orderContent = document.getElementById('orderContent');
-
-    // Ethiopian phone number validation (supports +251... or 09...)
-    function isValidEthiopianPhone(phone) {
-        // Remove any spaces or dashes
-        const cleaned = phone.replace(/\s+/g, '').replace(/-/g, '');
-        // Pattern: +251 followed by 9 digits, or 0 followed by 9 digits (total 10 digits after 0)
-        const ethioPattern = /^(\+251|0)[1-9]\d{8}$/;
-        return ethioPattern.test(cleaned);
-    }
-
-    // Open modal
-    loginBtn.addEventListener('click', () => {
-        authModal.classList.add('active');
-    });
-
-    // Close modal when clicking outside content
-    authModal.addEventListener('click', (e) => {
-        if (e.target === authModal) {
-            authModal.classList.remove('active');
-        }
-    });
-
-    // Tab switching
-    loginTab.addEventListener('click', () => {
-        loginTab.classList.add('active');
-        registerTab.classList.remove('active');
-        loginForm.classList.add('active');
-        registerForm.classList.remove('active');
-    });
-
-    registerTab.addEventListener('click', () => {
-        registerTab.classList.add('active');
-        loginTab.classList.remove('active');
-        registerForm.classList.add('active');
-        loginForm.classList.remove('active');
-    });
-
-    // Load users from localStorage
-    function getUsers() {
-        const users = localStorage.getItem('kgUsers');
-        return users ? JSON.parse(users) : [];
-    }
-
-    function saveUsers(users) {
-        localStorage.setItem('kgUsers', JSON.stringify(users));
-    }
-
-    // Get current logged in user
-    function getCurrentUser() {
-        const userJson = localStorage.getItem('kgCurrentUser');
-        return userJson ? JSON.parse(userJson) : null;
-    }
-
-    function setCurrentUser(user) {
-        if (user) {
-            localStorage.setItem('kgCurrentUser', JSON.stringify(user));
-        } else {
-            localStorage.removeItem('kgCurrentUser');
-        }
-    }
-
-    // Update UI based on login state (with profile link)
-    function updateAuthUI() {
-        const user = getCurrentUser();
-        if (user) {
-            loginBtn.style.display = 'none';
-            userInfo.style.display = 'flex';
-            userNameSpan.textContent = user.name;
-
-            // Remove any existing account link before adding a new one
-            const existingLink = userInfo.querySelector('.account-link');
-            if (existingLink) existingLink.remove();
-
-            // Create and insert "My Account" link
-            const profileLink = document.createElement('a');
-            profileLink.href = 'profile.html';
-            profileLink.className = 'account-link';
-            profileLink.textContent = 'My Account';
-            userInfo.insertBefore(profileLink, logoutBtn);
-
-            loginRequired.style.display = 'none';
-            orderContent.style.display = 'block';
-        } else {
-            loginBtn.style.display = 'block';
-            userInfo.style.display = 'none';
-            loginRequired.style.display = 'block';
-            orderContent.style.display = 'none';
-        }
-    }
-
-    // Register function with phone validation
-    window.register = function() {
-        const name = document.getElementById('regName').value.trim();
-        const phone = document.getElementById('regPhone').value.trim();
-        const password = document.getElementById('regPassword').value.trim();
-        const errorDiv = document.getElementById('registerError');
-
-        // Clear previous error
-        errorDiv.textContent = '';
-
-        // Basic field checks
-        if (!name || !phone || !password) {
-            errorDiv.textContent = 'All fields are required';
-            return;
-        }
-
-        // Validate phone number
-        if (!isValidEthiopianPhone(phone)) {
-            errorDiv.textContent = 'Please enter a valid Ethiopian phone number (e.g., 0912345678 or +251912345678)';
-            return;
-        }
-
-        // Check if phone already registered
-        const users = getUsers();
-        if (users.find(u => u.phone === phone)) {
-            errorDiv.textContent = 'Phone number already registered';
-            return;
-        }
-
-        // Create new user
-        const newUser = { name, phone, password };
-        users.push(newUser);
-        saveUsers(users);
-        setCurrentUser(newUser);
-        authModal.classList.remove('active');
-        updateAuthUI();
-        // Clear form
-        document.getElementById('regName').value = '';
-        document.getElementById('regPhone').value = '';
-        document.getElementById('regPassword').value = '';
-        errorDiv.textContent = '';
-    };
-
-    // Login function with phone validation
-    window.login = function() {
-        const phone = document.getElementById('loginPhone').value.trim();
-        const password = document.getElementById('loginPassword').value.trim();
-        const errorDiv = document.getElementById('loginError');
-
-        errorDiv.textContent = '';
-
-        if (!phone || !password) {
-            errorDiv.textContent = 'Please enter phone and password';
-            return;
-        }
-
-        if (!isValidEthiopianPhone(phone)) {
-            errorDiv.textContent = 'Please enter a valid Ethiopian phone number';
-            return;
-        }
-
-        const users = getUsers();
-        const user = users.find(u => u.phone === phone && u.password === password);
-        if (user) {
-            setCurrentUser(user);
-            authModal.classList.remove('active');
-            updateAuthUI();
-            document.getElementById('loginPhone').value = '';
-            document.getElementById('loginPassword').value = '';
-            errorDiv.textContent = '';
-        } else {
-            errorDiv.textContent = 'Invalid phone or password';
-        }
-    };
-
-    // Logout
-    logoutBtn.addEventListener('click', () => {
-        setCurrentUser(null);
-        updateAuthUI();
-    });
-
-    // Initialize on page load
-    updateAuthUI();
-
-    // ---------- CART & PAYMENT FUNCTIONS ----------
-    let cart = [];
-
-    // Load cart from localStorage
-    function loadCart() {
-        const saved = localStorage.getItem('kgCart');
-        if (saved) {
-            cart = JSON.parse(saved);
+            // Update the UI
             updateCartDisplay();
         }
-    }
 
-    // Save cart to localStorage
-    function saveCart() {
-        localStorage.setItem('kgCart', JSON.stringify(cart));
-    }
+        // ---------- Remove from Cart ----------
+        function removeFromCart(index) {
+            const item = cart[index];
+            if (!item) return;
 
-    window.addToCart = function(name, price) {
-        const existing = cart.find(item => item.name === name);
-        if (existing) {
-            existing.quantity += 1;
-        } else {
-            cart.push({ name, price, quantity: 1 });
-        }
-        updateCartDisplay();
-        saveCart();
-    };
-
-    window.removeFromCart = function(name) {
-        const index = cart.findIndex(item => item.name === name);
-        if (index !== -1) {
-            if (cart[index].quantity > 1) {
-                cart[index].quantity -= 1;
+            if (item.quantity > 1) {
+                item.quantity -= 1;
             } else {
                 cart.splice(index, 1);
             }
+            updateCartDisplay();
         }
-        updateCartDisplay();
-        saveCart();
-    };
 
-    window.deleteItem = function(name) {
-        cart = cart.filter(item => item.name !== name);
-        updateCartDisplay();
-        saveCart();
-    };
+        // ---------- Update Cart UI ----------
+        function updateCartDisplay() {
+            const cartContainer = document.getElementById('cart-items');
+            const totalElement = document.getElementById('cart-total');
+            const cartCount = document.getElementById('cart-count');
+            const itemCount = document.getElementById('item-count');
 
-    function updateCartDisplay() {
-        const cartDiv = document.getElementById('cart-items');
-        const totalSpan = document.getElementById('cart-total-amount');
-        
-        if (cart.length === 0) {
-            cartDiv.innerHTML = '<p class="empty-cart">Your cart is empty.</p>';
-            totalSpan.innerText = '0 Birr';
-            const totalInput = document.getElementById('order_total');
-            if (totalInput) totalInput.value = 0;
-            return;
-        }
-        
-        let html = '';
-        let total = 0;
-        
-        cart.forEach(item => {
-            const itemTotal = item.price * item.quantity;
-            total += itemTotal;
-            html += `
-                <div class="cart-item">
-                    <div class="cart-item-info">
-                        <span class="cart-item-name">${item.name}</span>
-                        <span class="cart-item-price"> ${item.price} Birr</span>
+            if (!cartContainer || !totalElement) return;
+
+            // If cart is empty
+            if (cart.length === 0) {
+                cartContainer.innerHTML = '<p class="empty-cart">Your cart is empty.</p>';
+                totalElement.textContent = '0';
+                cartCount.textContent = '0';
+                itemCount.textContent = '0 items';
+                return;
+            }
+
+            // Build HTML for each cart item
+            let html = '';
+            let totalPrice = 0;
+            let totalItems = 0;
+
+            cart.forEach((item, index) => {
+                totalPrice += item.price * item.quantity;
+                totalItems += item.quantity;
+
+                html += `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <span class="cart-item-name">${item.name}</span>
+                            <span class="cart-item-price">${item.price} Birr × ${item.quantity}</span>
+                        </div>
+                        <div class="cart-item-actions">
+                            <button onclick="removeFromCart(${index})">−</button>
+                            <span>${item.quantity}</span>
+                            <button onclick="addToCart('${item.name}', ${item.price})">+</button>
+                        </div>
                     </div>
-                    <div class="cart-item-actions">
-                        <button onclick="removeFromCart('${item.name}')">−</button>
-                        <span>${item.quantity}</span>
-                        <button onclick="addToCart('${item.name}', ${item.price})">+</button>
-                        <button onclick="deleteItem('${item.name}')" style="background:#ff4444; color:white;">🗑️</button>
-                    </div>
-                </div>
-            `;
-        });
-        
-        cartDiv.innerHTML = html;
-        totalSpan.innerText = total + ' Birr';
-        
-        let totalInput = document.getElementById('order_total');
-        if (!totalInput) {
-            totalInput = document.createElement('input');
-            totalInput.type = 'hidden';
-            totalInput.id = 'order_total';
-            totalInput.name = 'order_total';
-            document.getElementById('orderForm').appendChild(totalInput);
+                `;
+            });
+
+            cartContainer.innerHTML = html;
+            totalElement.textContent = totalPrice;
+            cartCount.textContent = totalItems;
+            itemCount.textContent = `${totalItems} item${totalItems > 1 ? 's' : ''}`;
         }
-        totalInput.value = total;
-        
-        if (document.getElementById('payment_method').value === 'bank') {
-            updatePaymentDetails('bank');
-        }
-    }
 
-    window.selectMethod = function(method) {
-        document.getElementById('payment_method').value = method;
-        document.querySelectorAll('.method-card').forEach(card => {
-            card.classList.remove('selected');
-        });
-        event.currentTarget.classList.add('selected');
-        updatePaymentDetails(method);
-    };
+        // ---------- Optional: Clear cart (not used, but can be added) ----------
+        // function clearCart() { cart = []; updateCartDisplay(); }
 
-    function updatePaymentDetails(method) {
-        const detailsDiv = document.getElementById('payment-details');
-        let html = '';
-        
-        if (method === 'telebirr') {
-            html = `
-                <div class="telebirr-info">
-                    <h4><i class="fas fa-mobile-alt" style="color:#2b7a4b;"></i> Telebirr Payment</h4>
-                    <p>1. Open your Telebirr app.</p>
-                    <p>2. Select "Pay" and scan the QR code below or enter the merchant code.</p>
-                    <div style="background:#fff; padding:1rem; text-align:center; margin:1rem 0;">
-                        <i class="fas fa-qrcode" style="font-size:5rem; color:#2b7a4b;"></i>
-                        <p><strong>Merchant: KG Grocery</strong></p>
-                        <p>Code: 123456</p>
-                    </div>
-                    <p>3. Enter amount: <strong id="telebirrAmount">${document.getElementById('order_total')?.value || '0'} Birr</strong></p>
-                    <p>4. Confirm payment. You'll be redirected automatically.</p>
-                </div>
-            `;
-        } else if (method === 'bank') {
-            const total = document.getElementById('order_total') ? document.getElementById('order_total').value : '0';
-            html = `
-                <div class="bank-details">
-                    <h4>Bank Transfer</h4>
-                    <p>Transfer the exact amount to one of these accounts:</p>
-                    <p><strong>Commercial Bank of Ethiopia</strong><br>
-                    Account: KG Grocery Delivery<br>
-                    Number: 1000023456789</p>
-                    <p><strong>Bank of Abyssinia</strong><br>
-                    Account: KG Grocery<br>
-                    Number: 2000012345678</p>
-                    <p><strong>Amount to transfer: ${total} Birr</strong></p>
-                    <button class="copy-btn" onclick="copyAccount('1000023456789')">Copy CBE Account</button>
-                    <button class="copy-btn" onclick="copyAccount('2000012345678')">Copy BoA Account</button>
-                    <p style="margin-top:1rem;">After transfer, click "Place order" and we'll confirm manually.</p>
-                </div>
-            `;
-        } else if (method === 'cash') {
-            html = `
-                <div class="cash-info">
-                    <h4>Cash on Delivery</h4>
-                    <p><i class="fas fa-check-circle" style="color:#2b7a4b;"></i> Pay when your order arrives.</p>
-                    <p>Our delivery person will carry change, but exact amount is appreciated.</p>
-                    <p>Total to pay: <strong id="cashAmount">${document.getElementById('order_total')?.value || '0'} Birr</strong></p>
-                </div>
-            `;
-        }
-        detailsDiv.innerHTML = html;
-    }
-
-    // Copy function that accepts account number
-    window.copyAccount = function(account) {
-        navigator.clipboard.writeText(account).then(() => {
-            alert("Account number copied!");
-        });
-    };
-
-    // Enhanced placeOrder with Formspree
-    window.placeOrder = function() {
-    const method = document.getElementById('payment_method').value;
-    const total = document.getElementById('order_total').value;
-    const user = getCurrentUser();
-    if (!user) {
-        alert('Please login first.');
-        return;
-    }
-
-    // Get form values
-    const name = document.getElementById('order_name').value.trim();
-    const phone = document.getElementById('order_phone').value.trim();
-    const email = document.getElementById('order_email').value.trim();
-    const address = document.getElementById('order_address').value.trim();
-    const details = document.getElementById('order_details').value.trim();
-    const instructions = document.getElementById('order_instructions').value.trim();
-
-    if (!name || !phone || !address) {
-        alert('Please fill in all required fields (name, phone, address).');
-        return;
-    }
-
-    // Create order object
-    const order = {
-        id: 'ORD-' + Math.floor(Math.random() * 1000),
-        date: new Date().toISOString().split('T')[0],
-        total: total,
-        status: 'pending',
-        payment: method,
-        items: cart,
-        customer: { name, phone, email, address, details, instructions }
-    };
-
-    // Save to localStorage
-    let userOrders = JSON.parse(localStorage.getItem('kgOrders_' + user.phone)) || [];
-    userOrders.push(order);
-    localStorage.setItem('kgOrders_' + user.phone, JSON.stringify(userOrders));
-
-    // --- Formspree Submission ---
-    const formData = new FormData();
-    formData.append('_replyto', email || user.phone + '@example.com'); // fallback email
-    formData.append('_subject', 'New KG Grocery Order #' + order.id);
-    formData.append('order_number', order.id);
-    formData.append('name', name);
-    formData.append('phone', phone);
-    formData.append('email', email || 'not provided');
-    formData.append('address', address);
-    formData.append('delivery_details', details);
-    formData.append('instructions', instructions);
-    formData.append('payment_method', method);
-    formData.append('total', total + ' Birr');
-    formData.append('cart', JSON.stringify(cart));
-
-    const FORMSPREE_URL = 'https://formspree.io/f/xkoqrgdq'; // <-- formspree
-
-    fetch(FORMSPREE_URL, {
-        method: 'POST',
-        body: formData,
-        headers: { 'Accept': 'application/json' }
-    })
-    .then(response => {
-        if (!response.ok) {
-            return response.json().then(err => { throw new Error(err.error || 'Formspree error'); });
-        }
-        return response.json();
-    })
-    .then(data => {
-        alert(`Order placed! Your order number is ${order.id}. A confirmation email has been sent.`);
-        // Clear cart
-        cart = [];
-        saveCart();
+        // Initialize display on page load
         updateCartDisplay();
-        window.location.href = 'profile.html#orders';
-    })
-    .catch(error => {
-        console.error('Formspree error:', error);
-        alert(`Order placed (${order.id}) but email notification failed. You can still view your order in your profile. Error: ${error.message}`);
-        // Still clear cart and redirect
-        cart = [];
-        saveCart();
-        updateCartDisplay();
-        window.location.href = 'profile.html#orders';
-    });
-};
+    </script>
 
-    // Load cart on page load
-    loadCart();
-    // Set default payment method
-    selectMethod('telebirr');
-})();
-</script>
 </body>
 </html>
