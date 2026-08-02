@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fresh Delivery – Shop</title>
+  <title>KG Delivery – Shop</title>
 
   <style>
     /* ---------- RESET & BASE ---------- */
@@ -441,6 +441,89 @@
       display: none !important;
     }
 
+    /* ---------- FOOTER ---------- */
+    footer {
+      margin-top: 50px;
+      background: #1e293b;
+      color: #e2e8f0;
+      border-radius: 24px;
+      padding: 40px 35px 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1.5fr;
+      gap: 40px;
+      margin-bottom: 30px;
+    }
+
+    .footer-grid .brand h3 {
+      font-size: 22px;
+      color: #b8e6b8;
+      margin-bottom: 8px;
+    }
+    .footer-grid .brand h3 span {
+      color: #facc15;
+    }
+    .footer-grid .brand p {
+      color: #94a3b8;
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 300px;
+    }
+
+    .footer-grid .links h4,
+    .footer-grid .social h4 {
+      color: white;
+      font-size: 17px;
+      margin-bottom: 14px;
+      font-weight: 600;
+    }
+
+    .footer-grid .links a {
+      display: block;
+      color: #94a3b8;
+      text-decoration: none;
+      margin-bottom: 10px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .footer-grid .links a:hover {
+      color: white;
+    }
+
+    .footer-grid .social .social-icons {
+      display: flex;
+      gap: 16px;
+      font-size: 28px;
+      margin-bottom: 14px;
+    }
+    .footer-grid .social .social-icons span {
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .footer-grid .social .social-icons span:hover {
+      transform: scale(1.15);
+    }
+    .footer-grid .social p {
+      color: #94a3b8;
+      font-size: 14px;
+    }
+    .footer-grid .social p a {
+      color: #b8e6b8;
+      text-decoration: none;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #334155;
+      padding-top: 20px;
+      text-align: center;
+      color: #64748b;
+      font-size: 14px;
+    }
+
     /* ---------- RESPONSIVE ---------- */
     @media (max-width: 700px) {
       nav {
@@ -466,6 +549,18 @@
       .page-header {
         font-size: 22px;
       }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+        text-align: center;
+      }
+      .footer-grid .brand p {
+        max-width: 100%;
+      }
+      .footer-grid .social .social-icons {
+        justify-content: center;
+      }
     }
 
     @media (max-width: 450px) {
@@ -485,7 +580,7 @@
 
     <!-- ========== NAVIGATION ========== -->
     <nav>
-      <div class="nav-brand" onclick="showPage('home')">🌿 Fresh<span>Delivery</span></div>
+      <div class="nav-brand" onclick="showPage('home')">🌿 KG<span>Delivery</span></div>
       <div class="nav-links">
         <a class="active" onclick="showPage('home')">🏠 Home</a>
         <a onclick="showPage('cart')">🛒 Cart <span class="cart-badge" id="nav-cart-count">0</span></a>
@@ -681,6 +776,51 @@
         </form>
       </div>
     </div>
+
+    <!-- ============================================================ -->
+    <!-- ========== FOOTER =========================================== -->
+    <!-- ============================================================ -->
+    <footer>
+      <div class="footer-grid">
+        <!-- Brand -->
+        <div class="brand">
+          <h3>🌿 KG<span>Delivery</span></h3>
+          <p>
+            Your trusted source for fresh groceries, dairy, and snacks.
+            Quality products delivered straight to your door.
+          </p>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="links">
+          <h4>Quick Links</h4>
+          <a onclick="showPage('home')">🏠 Home</a>
+          <a onclick="showPage('cart')">🛒 Cart</a>
+          <a onclick="showPage('contact')">📧 Contact</a>
+          <a onclick="showPage('feedback')">⭐ Feedback</a>
+        </div>
+
+        <!-- Social & Contact -->
+        <div class="social">
+          <h4>Connect With Us</h4>
+          <div class="social-icons">
+            <span title="Facebook">📘</span>
+            <span title="Twitter">🐦</span>
+            <span title="Instagram">📸</span>
+            <span title="YouTube">▶️</span>
+            <span title="TikTok">🎵</span>
+          </div>
+          <p>
+            📧 <a href="mailto:support@freshdelivery.com">support@kgdelivery.com</a><br />
+            📞 +251 912 345 678
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        &copy; 2026 KG Delivery. All rights reserved. Built with ❤️ for Ethiopia.
+      </div>
+    </footer>
 
   </div>
 
