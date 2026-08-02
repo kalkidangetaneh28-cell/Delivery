@@ -1,449 +1,1187 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fresh Delivery - Shopping Cart</title>
-    <style>
-        /* ---------- Reset & Base ---------- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fresh Delivery – Shop</title>
 
-        body {
-            background: #f8f9fa;
-            color: #333;
-            padding: 20px;
-        }
+  <style>
+    /* ---------- RESET & BASE ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 30px;
-        }
+    body {
+      background: #f8fafc;
+      color: #0f172a;
+      padding: 0 20px 40px;
+    }
 
-        /* ---------- Header ---------- */
-        header {
-            grid-column: 1 / -1;
-            background: #2e7d32;
-            color: white;
-            padding: 20px 30px;
-            border-radius: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
+    .app {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
 
-        header h1 {
-            font-size: 28px;
-            font-weight: 600;
-        }
+    /* ---------- NAVIGATION ---------- */
+    nav {
+      background: #1e293b;
+      padding: 14px 28px;
+      border-radius: 60px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin: 20px 0 30px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
 
-        header .cart-icon {
-            background: white;
-            color: #2e7d32;
-            padding: 8px 18px;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+    .nav-brand {
+      font-size: 24px;
+      font-weight: 700;
+      color: #b8e6b8;
+      letter-spacing: -0.5px;
+      cursor: pointer;
+    }
+    .nav-brand span {
+      color: #facc15;
+    }
 
-        header .cart-icon span {
-            background: #ff5722;
-            color: white;
-            border-radius: 50%;
-            padding: 2px 10px;
-            font-size: 16px;
-        }
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      align-items: center;
+    }
 
-        /* ---------- Product Grid ---------- */
-        .products {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 20px;
-        }
+    .nav-links a {
+      color: #e2e8f0;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 15px;
+      padding: 6px 14px;
+      border-radius: 30px;
+      transition: background 0.2s, color 0.2s;
+      cursor: pointer;
+    }
 
-        .product-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-            text-align: center;
-            transition: transform 0.2s;
-            border: 1px solid #e9ecef;
-        }
+    .nav-links a:hover {
+      background: #334155;
+      color: white;
+    }
 
-        .product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        }
+    .nav-links a.active {
+      background: #facc15;
+      color: #0f172a;
+      font-weight: 600;
+    }
 
-        .product-card .emoji {
-            font-size: 48px;
-            margin-bottom: 10px;
-        }
+    .cart-badge {
+      background: #dc2626;
+      color: white;
+      border-radius: 40px;
+      padding: 2px 12px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-left: 4px;
+    }
 
-        .product-card h3 {
-            font-size: 18px;
-            margin-bottom: 6px;
-        }
+    #user-status {
+      color: #94a3b8;
+      font-size: 14px;
+      margin-left: 10px;
+    }
 
-        .product-card .price {
-            color: #2e7d32;
-            font-weight: 700;
-            font-size: 20px;
-            margin-bottom: 14px;
-        }
+    /* ---------- PAGES (show/hide) ---------- */
+    .page {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
 
-        .product-card .price span {
-            font-weight: 400;
-            font-size: 14px;
-            color: #888;
-        }
+    .page.active {
+      display: block;
+    }
 
-        .add-to-cart-btn {
-            background: #2e7d32;
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 30px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-            width: 100%;
-        }
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-        .add-to-cart-btn:hover {
-            background: #1b5e20;
-        }
+    /* ---------- PAGE HEADERS ---------- */
+    .page-header {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .page-header small {
+      font-size: 16px;
+      font-weight: 400;
+      color: #64748b;
+    }
 
-        .add-to-cart-btn:active {
-            transform: scale(0.96);
-        }
+    /* ---------- PRODUCT GRID ---------- */
+    .category-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
 
-        /* ---------- Cart Sidebar ---------- */
-        .cart-sidebar {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e9ecef;
-            position: sticky;
-            top: 20px;
-            max-height: calc(100vh - 120px);
-            display: flex;
-            flex-direction: column;
-        }
+    .category-filters button {
+      background: #e2e8f0;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 14px;
+    }
+    .category-filters button:hover {
+      background: #cbd5e1;
+    }
+    .category-filters button.active-filter {
+      background: #1e293b;
+      color: white;
+    }
 
-        .cart-sidebar h2 {
-            font-size: 22px;
-            border-bottom: 2px solid #f1f3f5;
-            padding-bottom: 12px;
-            margin-bottom: 16px;
-            display: flex;
-            justify-content: space-between;
-        }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 22px;
+    }
 
-        .cart-sidebar h2 small {
-            font-size: 16px;
-            font-weight: 400;
-            color: #888;
-        }
+    .product-card {
+      background: white;
+      border-radius: 20px;
+      padding: 20px 14px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+      border: 1px solid #e9edf2;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
 
-        #cart-items {
-            flex: 1;
-            overflow-y: auto;
-            margin-bottom: 16px;
-            padding-right: 4px;
-        }
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.07);
+    }
 
-        .empty-cart {
-            color: #999;
-            font-style: italic;
-            text-align: center;
-            padding: 30px 0;
-        }
+    .product-card .emoji {
+      font-size: 44px;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .product-card .name {
+      font-weight: 700;
+      font-size: 17px;
+    }
+    .product-card .price {
+      font-size: 20px;
+      font-weight: 700;
+      color: #15803d;
+      margin: 6px 0 14px;
+    }
+    .product-card .price small {
+      font-size: 13px;
+      font-weight: 400;
+      color: #94a3b8;
+    }
 
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #f1f3f5;
-        }
+    .btn-add {
+      background: #15803d;
+      color: white;
+      border: none;
+      padding: 10px 0;
+      width: 100%;
+      border-radius: 40px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-size: 15px;
+    }
+    .btn-add:hover {
+      background: #166534;
+    }
+    .btn-add:active {
+      transform: scale(0.94);
+    }
 
-        .cart-item:last-child {
-            border-bottom: none;
-        }
+    /* ---------- CART PAGE ---------- */
+    .cart-list {
+      background: white;
+      border-radius: 20px;
+      padding: 24px;
+      border: 1px solid #e9edf2;
+      margin-bottom: 20px;
+    }
 
-        .cart-item-info {
-            display: flex;
-            flex-direction: column;
-        }
+    .cart-item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid #f1f5f9;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .cart-item-row:last-child {
+      border-bottom: none;
+    }
 
-        .cart-item-name {
-            font-weight: 600;
-        }
+    .cart-item-row .info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .cart-item-row .info .emoji-sm {
+      font-size: 28px;
+    }
+    .cart-item-row .info .details .name {
+      font-weight: 600;
+    }
+    .cart-item-row .info .details .price {
+      font-size: 14px;
+      color: #475569;
+    }
 
-        .cart-item-price {
-            font-size: 14px;
-            color: #555;
-        }
+    .cart-item-row .controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .cart-item-row .controls button {
+      background: #f1f5f9;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      font-size: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .cart-item-row .controls button:hover {
+      background: #e2e8f0;
+    }
+    .cart-item-row .controls .qty {
+      min-width: 24px;
+      text-align: center;
+      font-weight: 700;
+    }
 
-        .cart-item-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+    .cart-summary {
+      background: #f1f5f9;
+      border-radius: 16px;
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .cart-summary .total {
+      font-size: 24px;
+      font-weight: 700;
+    }
+    .cart-summary .total span {
+      color: #15803d;
+    }
 
-        .cart-item-actions button {
-            background: #e9ecef;
-            border: none;
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
-        }
+    .btn-primary {
+      background: #1e293b;
+      color: white;
+      border: none;
+      padding: 12px 32px;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-primary:hover {
+      background: #0f172a;
+    }
+    .btn-success {
+      background: #15803d;
+    }
+    .btn-success:hover {
+      background: #166534;
+    }
+    .btn-danger {
+      background: #dc2626;
+    }
+    .btn-danger:hover {
+      background: #b91c1c;
+    }
 
-        .cart-item-actions button:hover {
-            background: #dee2e6;
-        }
+    /* ---------- FORMS (Login, Register, Payment, Contact, Feedback) ---------- */
+    .form-card {
+      max-width: 520px;
+      background: white;
+      padding: 36px 32px;
+      border-radius: 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e9edf2;
+      margin: 0 auto;
+    }
 
-        .cart-item-actions button:active {
-            transform: scale(0.92);
-        }
+    .form-card h2 {
+      margin-bottom: 20px;
+      font-size: 26px;
+    }
 
-        .cart-item-actions span {
-            min-width: 24px;
-            text-align: center;
-            font-weight: 600;
-        }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #d1d9e6;
+      border-radius: 12px;
+      font-size: 15px;
+      transition: 0.2s;
+      background: #fafcfc;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #15803d;
+      box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.15);
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
 
-        .cart-total {
-            border-top: 2px solid #f1f3f5;
-            padding-top: 16px;
-            font-size: 20px;
-            font-weight: 700;
-            display: flex;
-            justify-content: space-between;
-        }
+    .form-row {
+      display: flex;
+      gap: 16px;
+    }
+    .form-row .form-group {
+      flex: 1;
+    }
 
-        .cart-total span {
-            color: #2e7d32;
-        }
+    .form-card .btn-primary {
+      width: 100%;
+      justify-content: center;
+      padding: 14px;
+      font-size: 17px;
+    }
 
-        .checkout-btn {
-            background: #ff5722;
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 30px;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 14px;
-            transition: background 0.2s;
-        }
+    .form-footer {
+      margin-top: 16px;
+      text-align: center;
+      color: #475569;
+    }
+    .form-footer a {
+      color: #15803d;
+      font-weight: 600;
+      cursor: pointer;
+    }
 
-        .checkout-btn:hover {
-            background: #e64a19;
-        }
+    /* ---------- RATING STARS (Feedback) ---------- */
+    .star-rating {
+      display: flex;
+      gap: 8px;
+      font-size: 32px;
+      cursor: pointer;
+      margin: 8px 0 12px;
+    }
+    .star-rating .star {
+      color: #d1d9e6;
+      transition: 0.2s;
+    }
+    .star-rating .star.active {
+      color: #facc15;
+    }
 
-        .checkout-btn:active {
-            transform: scale(0.97);
-        }
+    /* ---------- MISC ---------- */
+    .empty-state {
+      text-align: center;
+      padding: 40px 0;
+      color: #64748b;
+      font-size: 18px;
+    }
+    .empty-state .emoji-big {
+      font-size: 56px;
+      display: block;
+      margin-bottom: 12px;
+    }
 
-        /* ---------- Responsive ---------- */
-        @media (max-width: 800px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
-            .cart-sidebar {
-                position: static;
-                max-height: none;
-            }
-        }
-    </style>
+    .alert-box {
+      background: #dcfce7;
+      border: 1px solid #86efac;
+      color: #166534;
+      padding: 12px 18px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 700px) {
+      nav {
+        flex-direction: column;
+        gap: 12px;
+        border-radius: 28px;
+        padding: 16px 20px;
+      }
+      .nav-links {
+        justify-content: center;
+      }
+      .form-row {
+        flex-direction: column;
+        gap: 0;
+      }
+      .cart-summary {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .page-header {
+        font-size: 22px;
+      }
+    }
+
+    @media (max-width: 450px) {
+      .product-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .product-card {
+        padding: 14px 10px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Header -->
-        <header>
-            <h1>🌿 Fresh Delivery</h1>
-            <div class="cart-icon">
-                🛒 Cart
-                <span id="cart-count">0</span>
-            </div>
-        </header>
+  <div class="app">
 
-        <!-- Product List -->
-        <section>
-            <div class="products" id="product-list">
-                <!-- Each product card calls addToCart(name, price) -->
-                <div class="product-card">
-                    <div class="emoji">🍎</div>
-                    <h3>Apples</h3>
-                    <div class="price">80 <span>Birr</span></div>
-                    <button class="add-to-cart-btn" onclick="addToCart('Apples', 80)">+ Add</button>
-                </div>
+    <!-- ========== NAVIGATION ========== -->
+    <nav>
+      <div class="nav-brand" onclick="showPage('home')">🌿 Fresh<span>Delivery</span></div>
+      <div class="nav-links">
+        <a class="active" onclick="showPage('home')">🏠 Home</a>
+        <a onclick="showPage('cart')">🛒 Cart <span class="cart-badge" id="nav-cart-count">0</span></a>
+        <a onclick="showPage('login')">🔐 Login</a>
+        <a onclick="showPage('register')">📝 Register</a>
+        <a onclick="showPage('payment')">💳 Payment</a>
+        <a onclick="showPage('contact')">📧 Contact</a>
+        <a onclick="showPage('feedback')">⭐ Feedback</a>
+        <span id="user-status"></span>
+      </div>
+    </nav>
 
-                <div class="product-card">
-                    <div class="emoji">🍌</div>
-                    <h3>Bananas</h3>
-                    <div class="price">50 <span>Birr</span></div>
-                    <button class="add-to-cart-btn" onclick="addToCart('Bananas', 50)">+ Add</button>
-                </div>
+    <!-- ============================================================ -->
+    <!-- ========== PAGE: HOME ======================================= -->
+    <!-- ============================================================ -->
+    <div id="page-home" class="page active">
+      <div class="page-header">
+        🛍️ Our Fresh Products
+        <small>– browse freely, login to order</small>
+      </div>
 
-                <div class="product-card">
-                    <div class="emoji">🍊</div>
-                    <h3>Oranges</h3>
-                    <div class="price">60 <span>Birr</span></div>
-                    <button class="add-to-cart-btn" onclick="addToCart('Oranges', 60)">+ Add</button>
-                </div>
+      <div class="category-filters" id="filter-buttons">
+        <button class="active-filter" data-filter="all">All</button>
+        <button data-filter="fruits">🍎 Fruits</button>
+        <button data-filter="vegetables">🥬 Vegetables</button>
+        <button data-filter="dairy">🥛 Dairy & Bakery</button>
+        <button data-filter="beverages">🥤 Beverages</button>
+        <button data-filter="snacks">🍿 Snacks</button>
+      </div>
 
-                <div class="product-card">
-                    <div class="emoji">🥑</div>
-                    <h3>Avocados</h3>
-                    <div class="price">120 <span>Birr</span></div>
-                    <button class="add-to-cart-btn" onclick="addToCart('Avocados', 120)">+ Add</button>
-                </div>
-
-                <div class="product-card">
-                    <div class="emoji">🥛</div>
-                    <h3>Milk (1L)</h3>
-                    <div class="price">90 <span>Birr</span></div>
-                    <button class="add-to-cart-btn" onclick="addToCart('Milk', 90)">+ Add</button>
-                </div>
-
-                <div class="product-card">
-                    <div class="emoji">🍞</div>
-                    <h3>Bread</h3>
-                    <div class="price">40 <span>Birr</span></div>
-                    <button class="add-to-cart-btn" onclick="addToCart('Bread', 40)">+ Add</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Shopping Cart Sidebar -->
-        <aside class="cart-sidebar">
-            <h2>
-                Your Cart
-                <small id="item-count">0 items</small>
-            </h2>
-            <div id="cart-items">
-                <p class="empty-cart">Your cart is empty.</p>
-            </div>
-            <div class="cart-total">
-                Total: <span id="cart-total">0</span> Birr
-            </div>
-            <button class="checkout-btn" onclick="alert('Proceed to checkout!')">🛒 Checkout</button>
-        </aside>
+      <div class="product-grid" id="product-grid"></div>
     </div>
 
     <!-- ============================================================ -->
-    <!--  JAVASCRIPT – The missing piece that makes the "Add" buttons work -->
+    <!-- ========== PAGE: CART ======================================= -->
     <!-- ============================================================ -->
-    <script>
-        // ---------- Cart Data ----------
-        let cart = []; // each item: { name, price, quantity }
+    <div id="page-cart" class="page">
+      <div class="page-header">🛒 Your Cart</div>
 
-        // ---------- Add to Cart ----------
-        function addToCart(name, price) {
-            // Check if item already exists
-            const existing = cart.find(item => item.name === name);
-            if (existing) {
-                existing.quantity += 1;
-            } else {
-                cart.push({ name, price, quantity: 1 });
-            }
-            // Update the UI
-            updateCartDisplay();
-        }
+      <div id="cart-container">
+        <div class="cart-list" id="cart-items-list"></div>
+        <div class="cart-summary">
+          <div class="total">Total: <span id="cart-total-price">0</span> Birr</div>
+          <div>
+            <button class="btn-primary btn-danger" onclick="clearCart()" style="margin-right:12px;">🗑️ Clear</button>
+            <button class="btn-primary btn-success" onclick="proceedToPayment()">Proceed to Payment →</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        // ---------- Remove from Cart ----------
-        function removeFromCart(index) {
-            const item = cart[index];
-            if (!item) return;
+    <!-- ============================================================ -->
+    <!-- ========== PAGE: LOGIN ====================================== -->
+    <!-- ============================================================ -->
+    <div id="page-login" class="page">
+      <div class="form-card">
+        <h2>🔐 Login</h2>
+        <div id="login-message"></div>
+        <form onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="login-email" placeholder="you@example.com" required />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="login-password" placeholder="••••••••" required />
+          </div>
+          <button class="btn-primary" type="submit">Sign In</button>
+        </form>
+        <div class="form-footer">
+          Don't have an account? <a onclick="showPage('register')">Register here</a>
+        </div>
+      </div>
+    </div>
 
-            if (item.quantity > 1) {
-                item.quantity -= 1;
-            } else {
-                cart.splice(index, 1);
-            }
-            updateCartDisplay();
-        }
+    <!-- ============================================================ -->
+    <!-- ========== PAGE: REGISTER =================================== -->
+    <!-- ============================================================ -->
+    <div id="page-register" class="page">
+      <div class="form-card">
+        <h2>📝 Register</h2>
+        <div id="register-message"></div>
+        <form onsubmit="handleRegister(event)">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="reg-name" placeholder="John Doe" required />
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="reg-email" placeholder="you@example.com" required />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="reg-password" placeholder="Min 6 characters" minlength="6" required />
+          </div>
+          <button class="btn-primary" type="submit">Create Account</button>
+        </form>
+        <div class="form-footer">
+          Already have an account? <a onclick="showPage('login')">Login here</a>
+        </div>
+      </div>
+    </div>
 
-        // ---------- Update Cart UI ----------
-        function updateCartDisplay() {
-            const cartContainer = document.getElementById('cart-items');
-            const totalElement = document.getElementById('cart-total');
-            const cartCount = document.getElementById('cart-count');
-            const itemCount = document.getElementById('item-count');
+    <!-- ============================================================ -->
+    <!-- ========== PAGE: PAYMENT ==================================== -->
+    <!-- ============================================================ -->
+    <div id="page-payment" class="page">
+      <div class="page-header">💳 Payment & Checkout</div>
 
-            if (!cartContainer || !totalElement) return;
+      <div id="payment-message"></div>
 
-            // If cart is empty
-            if (cart.length === 0) {
-                cartContainer.innerHTML = '<p class="empty-cart">Your cart is empty.</p>';
-                totalElement.textContent = '0';
-                cartCount.textContent = '0';
-                itemCount.textContent = '0 items';
-                return;
-            }
+      <div class="form-card" style="max-width:600px;">
+        <h3 style="margin-bottom:16px;">📦 Order Summary</h3>
+        <div id="payment-summary" style="margin-bottom:20px; background:#f8fafc; padding:16px; border-radius:16px;"></div>
 
-            // Build HTML for each cart item
-            let html = '';
-            let totalPrice = 0;
-            let totalItems = 0;
+        <form onsubmit="handlePayment(event)">
+          <div class="form-group">
+            <label>Delivery Address</label>
+            <input type="text" id="pay-address" placeholder="Street, City, Building" required />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Card Number</label>
+              <input type="text" id="pay-card" placeholder="1234 5678 9012 3456" required />
+            </div>
+            <div class="form-group">
+              <label>Expiry</label>
+              <input type="text" id="pay-expiry" placeholder="MM/YY" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>CVV</label>
+            <input type="text" id="pay-cvv" placeholder="123" required />
+          </div>
+          <button class="btn-primary btn-success" type="submit" style="margin-top:8px;">✅ Place Order</button>
+        </form>
+      </div>
+    </div>
 
-            cart.forEach((item, index) => {
-                totalPrice += item.price * item.quantity;
-                totalItems += item.quantity;
+    <!-- ============================================================ -->
+    <!-- ========== PAGE: CONTACT ==================================== -->
+    <!-- ============================================================ -->
+    <div id="page-contact" class="page">
+      <div class="page-header">📧 Contact Us</div>
+      <div class="form-card">
+        <div id="contact-message"></div>
+        <form onsubmit="handleContact(event)">
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" id="contact-name" placeholder="John Doe" required />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="contact-email" placeholder="you@example.com" required />
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea id="contact-msg" placeholder="How can we help you?" required></textarea>
+          </div>
+          <button class="btn-primary" type="submit">Send Message</button>
+        </form>
+      </div>
+    </div>
 
-                html += `
-                    <div class="cart-item">
-                        <div class="cart-item-info">
-                            <span class="cart-item-name">${item.name}</span>
-                            <span class="cart-item-price">${item.price} Birr × ${item.quantity}</span>
-                        </div>
-                        <div class="cart-item-actions">
-                            <button onclick="removeFromCart(${index})">−</button>
-                            <span>${item.quantity}</span>
-                            <button onclick="addToCart('${item.name}', ${item.price})">+</button>
-                        </div>
-                    </div>
-                `;
-            });
+    <!-- ============================================================ -->
+    <!-- ========== PAGE: FEEDBACK =================================== -->
+    <!-- ============================================================ -->
+    <div id="page-feedback" class="page">
+      <div class="page-header">⭐ Feedback</div>
+      <div class="form-card">
+        <div id="feedback-message"></div>
+        <form onsubmit="handleFeedback(event)">
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" id="fb-name" placeholder="John Doe" required />
+          </div>
+          <div class="form-group">
+            <label>Rating</label>
+            <div class="star-rating" id="star-rating">
+              <span class="star" data-value="1">★</span>
+              <span class="star" data-value="2">★</span>
+              <span class="star" data-value="3">★</span>
+              <span class="star" data-value="4">★</span>
+              <span class="star" data-value="5">★</span>
+            </div>
+            <input type="hidden" id="fb-rating" value="0" />
+          </div>
+          <div class="form-group">
+            <label>Comments</label>
+            <textarea id="fb-comment" placeholder="Share your experience..." required></textarea>
+          </div>
+          <button class="btn-primary" type="submit">Submit Feedback</button>
+        </form>
+      </div>
+    </div>
 
-            cartContainer.innerHTML = html;
-            totalElement.textContent = totalPrice;
-            cartCount.textContent = totalItems;
-            itemCount.textContent = `${totalItems} item${totalItems > 1 ? 's' : ''}`;
-        }
+  </div>
 
-        // ---------- Optional: Clear cart (not used, but can be added) ----------
-        // function clearCart() { cart = []; updateCartDisplay(); }
+  <!-- ============================================================ -->
+  <!-- ========== JAVASCRIPT ======================================= -->
+  <!-- ============================================================ -->
+  <script>
+    // --------------------------------------------------------------
+    // 1. PRODUCT DATA (24 items across 5 categories)
+    // --------------------------------------------------------------
+    const products = [
+      // Fruits
+      { id: 1, name: 'Apples', price: 80, category: 'fruits', emoji: '🍎' },
+      { id: 2, name: 'Bananas', price: 50, category: 'fruits', emoji: '🍌' },
+      { id: 3, name: 'Oranges', price: 60, category: 'fruits', emoji: '🍊' },
+      { id: 4, name: 'Avocados', price: 120, category: 'fruits', emoji: '🥑' },
+      { id: 5, name: 'Mangoes', price: 100, category: 'fruits', emoji: '🥭' },
+      { id: 6, name: 'Grapes', price: 150, category: 'fruits', emoji: '🍇' },
+      { id: 7, name: 'Strawberries', price: 200, category: 'fruits', emoji: '🍓' },
+      { id: 8, name: 'Pineapple', price: 130, category: 'fruits', emoji: '🍍' },
+      // Vegetables
+      { id: 9, name: 'Tomatoes', price: 40, category: 'vegetables', emoji: '🍅' },
+      { id: 10, name: 'Onions', price: 30, category: 'vegetables', emoji: '🧅' },
+      { id: 11, name: 'Potatoes', price: 45, category: 'vegetables', emoji: '🥔' },
+      { id: 12, name: 'Carrots', price: 35, category: 'vegetables', emoji: '🥕' },
+      { id: 13, name: 'Broccoli', price: 90, category: 'vegetables', emoji: '🥦' },
+      { id: 14, name: 'Spinach', price: 70, category: 'vegetables', emoji: '🥬' },
+      { id: 15, name: 'Bell Peppers', price: 55, category: 'vegetables', emoji: '🫑' },
+      { id: 16, name: 'Cabbage', price: 25, category: 'vegetables', emoji: '🥬' },
+      // Dairy & Bakery
+      { id: 17, name: 'Milk (1L)', price: 90, category: 'dairy', emoji: '🥛' },
+      { id: 18, name: 'Bread', price: 40, category: 'dairy', emoji: '🍞' },
+      { id: 19, name: 'Cheese', price: 150, category: 'dairy', emoji: '🧀' },
+      { id: 20, name: 'Eggs (12pcs)', price: 110, category: 'dairy', emoji: '🥚' },
+      { id: 21, name: 'Butter', price: 120, category: 'dairy', emoji: '🧈' },
+      // Beverages
+      { id: 22, name: 'Fruit Juice', price: 85, category: 'beverages', emoji: '🧃' },
+      { id: 23, name: 'Coffee Beans', price: 250, category: 'beverages', emoji: '☕' },
+      // Snacks
+      { id: 24, name: 'Potato Chips', price: 45, category: 'snacks', emoji: '🍟' },
+    ];
 
-        // Initialize display on page load
-        updateCartDisplay();
-    </script>
+    // --------------------------------------------------------------
+    // 2. STATE
+    // --------------------------------------------------------------
+    let cart = JSON.parse(localStorage.getItem('freshCart')) || [];
+    let currentFilter = 'all';
+    let selectedRating = 0;
+
+    // --------------------------------------------------------------
+    // 3. NAVIGATION
+    // --------------------------------------------------------------
+    function showPage(pageId) {
+      // hide all pages
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      // show target
+      const target = document.getElementById(`page-${pageId}`);
+      if (target) target.classList.add('active');
+
+      // update nav active class
+      document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
+      const navLinks = document.querySelectorAll('.nav-links a');
+      const map = {
+        home: 0,
+        cart: 1,
+        login: 2,
+        register: 3,
+        payment: 4,
+        contact: 5,
+        feedback: 6
+      };
+      if (map[pageId] !== undefined && navLinks[map[pageId]]) {
+        navLinks[map[pageId]].classList.add('active');
+      }
+
+      // refresh dynamic content
+      if (pageId === 'home') renderProducts(currentFilter);
+      if (pageId === 'cart') renderCart();
+      if (pageId === 'payment') renderPaymentSummary();
+      updateUserStatus();
+    }
+
+    // --------------------------------------------------------------
+    // 4. PRODUCT RENDERING (with filter)
+    // --------------------------------------------------------------
+    function renderProducts(filter = 'all') {
+      const grid = document.getElementById('product-grid');
+      const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div class="empty-state"><span class="emoji-big">😕</span>No products in this category.</div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(p => `
+        <div class="product-card">
+          <span class="emoji">${p.emoji}</span>
+          <div class="name">${p.name}</div>
+          <div class="price">${p.price} <small>Birr</small></div>
+          <button class="btn-add" onclick="addToCart(${p.id})">+ Add</button>
+        </div>
+      `).join('');
+
+      // update filter button styles
+      document.querySelectorAll('.category-filters button').forEach(btn => {
+        btn.classList.toggle('active-filter', btn.dataset.filter === filter);
+      });
+    }
+
+    // --------------------------------------------------------------
+    // 5. CART OPERATIONS (with login guard)
+    // --------------------------------------------------------------
+    function addToCart(productId) {
+      // 🔐 GUEST CHECK: Only logged-in users can add to cart
+      if (!getLoggedInUser()) {
+        alert('🔒 Please login or register to add items to your cart.');
+        showPage('login');
+        return;
+      }
+
+      const product = products.find(p => p.id === productId);
+      if (!product) return;
+
+      const existing = cart.find(item => item.id === productId);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ ...product, quantity: 1 });
+      }
+      saveCart();
+      updateCartBadge();
+      // if cart page is open, refresh it
+      if (document.getElementById('page-cart').classList.contains('active')) {
+        renderCart();
+      }
+      // show mini feedback
+      const btn = event?.target;
+      if (btn) {
+        btn.textContent = '✅ Added!';
+        setTimeout(() => { btn.textContent = '+ Add'; }, 800);
+      }
+    }
+
+    function removeFromCart(productId) {
+      const index = cart.findIndex(item => item.id === productId);
+      if (index === -1) return;
+      if (cart[index].quantity > 1) {
+        cart[index].quantity -= 1;
+      } else {
+        cart.splice(index, 1);
+      }
+      saveCart();
+      updateCartBadge();
+      renderCart();
+    }
+
+    function clearCart() {
+      if (cart.length === 0) return;
+      if (confirm('Clear all items from your cart?')) {
+        cart = [];
+        saveCart();
+        updateCartBadge();
+        renderCart();
+      }
+    }
+
+    function saveCart() {
+      localStorage.setItem('freshCart', JSON.stringify(cart));
+    }
+
+    function updateCartBadge() {
+      const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+      document.getElementById('nav-cart-count').textContent = total;
+    }
+
+    // --------------------------------------------------------------
+    // 6. RENDER CART PAGE
+    // --------------------------------------------------------------
+    function renderCart() {
+      const container = document.getElementById('cart-items-list');
+      const totalEl = document.getElementById('cart-total-price');
+
+      if (cart.length === 0) {
+        container.innerHTML = `<div class="empty-state"><span class="emoji-big">🛒</span>Your cart is empty.<br>Go to <a onclick="showPage('home')" style="color:#15803d;font-weight:600;cursor:pointer;">Home</a> to add items.</div>`;
+        totalEl.textContent = '0';
+        return;
+      }
+
+      let html = '';
+      let total = 0;
+      cart.forEach(item => {
+        total += item.price * item.quantity;
+        html += `
+          <div class="cart-item-row">
+            <div class="info">
+              <span class="emoji-sm">${item.emoji}</span>
+              <div class="details">
+                <div class="name">${item.name}</div>
+                <div class="price">${item.price} Birr × ${item.quantity}</div>
+              </div>
+            </div>
+            <div class="controls">
+              <button onclick="removeFromCart(${item.id})">−</button>
+              <span class="qty">${item.quantity}</span>
+              <button onclick="addToCart(${item.id})">+</button>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+      totalEl.textContent = total;
+    }
+
+    // --------------------------------------------------------------
+    // 7. PAYMENT SUMMARY & GUARD
+    // --------------------------------------------------------------
+    function renderPaymentSummary() {
+      const container = document.getElementById('payment-summary');
+      if (cart.length === 0) {
+        container.innerHTML = `<p style="color:#dc2626;">Your cart is empty. Please add items before payment.</p>`;
+        return;
+      }
+      let html = `<ul style="list-style:none;padding:0;">`;
+      let total = 0;
+      cart.forEach(item => {
+        total += item.price * item.quantity;
+        html += `<li style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #e9edf2;">${item.emoji} ${item.name} x${item.quantity} <strong>${item.price * item.quantity} Birr</strong></li>`;
+      });
+      html += `</ul><div style="font-size:20px;font-weight:700;margin-top:12px;">Total: ${total} Birr</div>`;
+      container.innerHTML = html;
+    }
+
+    // --------------------------------------------------------------
+    // 8. AUTH: LOGIN / REGISTER (localStorage mock DB)
+    // --------------------------------------------------------------
+    function getUsers() {
+      return JSON.parse(localStorage.getItem('freshUsers')) || [];
+    }
+
+    function setUsers(users) {
+      localStorage.setItem('freshUsers', JSON.stringify(users));
+    }
+
+    function getLoggedInUser() {
+      return localStorage.getItem('freshLoggedInUser') || null;
+    }
+
+    function setLoggedInUser(email) {
+      if (email) localStorage.setItem('freshLoggedInUser', email);
+      else localStorage.removeItem('freshLoggedInUser');
+      updateUserStatus();
+    }
+
+    function updateUserStatus() {
+      const el = document.getElementById('user-status');
+      const user = getLoggedInUser();
+      if (user) {
+        el.innerHTML = `👋 ${user} <a onclick="logoutUser()" style="color:#f87171;cursor:pointer;margin-left:8px;">(logout)</a>`;
+      } else {
+        el.textContent = '';
+      }
+    }
+
+    function logoutUser() {
+      setLoggedInUser(null);
+      updateUserStatus();
+      showPage('home');
+    }
+
+    // Login handler
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      const pass = document.getElementById('login-password').value.trim();
+      const msg = document.getElementById('login-message');
+
+      const users = getUsers();
+      const found = users.find(u => u.email === email && u.password === pass);
+      if (found) {
+        setLoggedInUser(email);
+        msg.innerHTML = `<div class="alert-box">✅ Login successful! Welcome back.</div>`;
+        setTimeout(() => { showPage('home');
+          msg.innerHTML = ''; }, 1000);
+      } else {
+        msg.innerHTML = `<div class="alert-box" style="background:#fee2e2;border-color:#fca5a5;color:#991b1b;">❌ Invalid email or password. Please register first.</div>`;
+      }
+      document.getElementById('login-password').value = '';
+    }
+
+    // Register handler
+    function handleRegister(e) {
+      e.preventDefault();
+      const name = document.getElementById('reg-name').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const pass = document.getElementById('reg-password').value.trim();
+      const msg = document.getElementById('register-message');
+
+      if (pass.length < 6) {
+        msg.innerHTML = `<div class="alert-box" style="background:#fee2e2;border-color:#fca5a5;color:#991b1b;">❌ Password must be at least 6 characters.</div>`;
+        return;
+      }
+
+      const users = getUsers();
+      if (users.find(u => u.email === email)) {
+        msg.innerHTML = `<div class="alert-box" style="background:#fee2e2;border-color:#fca5a5;color:#991b1b;">❌ Email already registered. Please login.</div>`;
+        return;
+      }
+
+      users.push({ name, email, password: pass });
+      setUsers(users);
+      setLoggedInUser(email);
+      msg.innerHTML = `<div class="alert-box">✅ Registration successful! Welcome, ${name}.</div>`;
+      document.getElementById('reg-name').value = '';
+      document.getElementById('reg-email').value = '';
+      document.getElementById('reg-password').value = '';
+      setTimeout(() => { showPage('home');
+        msg.innerHTML = ''; }, 1200);
+    }
+
+    // --------------------------------------------------------------
+    // 9. PAYMENT HANDLER (with login guard)
+    // --------------------------------------------------------------
+    function proceedToPayment() {
+      if (cart.length === 0) {
+        alert('Your cart is empty. Add some items first!');
+        return;
+      }
+      if (!getLoggedInUser()) {
+        alert('🔒 Please login first to proceed with payment.');
+        showPage('login');
+        return;
+      }
+      showPage('payment');
+      renderPaymentSummary();
+    }
+
+    function handlePayment(e) {
+      e.preventDefault();
+
+      // 🔐 Extra guard: prevent guest from placing order
+      if (!getLoggedInUser()) {
+        alert('🔒 You must be logged in to place an order.');
+        showPage('login');
+        return;
+      }
+
+      if (cart.length === 0) {
+        alert('Cart is empty!');
+        return;
+      }
+      const addr = document.getElementById('pay-address').value.trim();
+      if (!addr) {
+        document.getElementById('payment-message').innerHTML =
+          `<div class="alert-box" style="background:#fee2e2;border-color:#fca5a5;color:#991b1b;">❌ Please enter a delivery address.</div>`;
+        return;
+      }
+      // Simulate order placement
+      document.getElementById('payment-message').innerHTML =
+        `<div class="alert-box">✅ Order placed successfully! Thank you for shopping with Fresh Delivery. 🎉</div>`;
+      // Clear cart
+      cart = [];
+      saveCart();
+      updateCartBadge();
+      renderCart();
+      // reset form
+      document.getElementById('pay-address').value = '';
+      document.getElementById('pay-card').value = '';
+      document.getElementById('pay-expiry').value = '';
+      document.getElementById('pay-cvv').value = '';
+      setTimeout(() => {
+        document.getElementById('payment-message').innerHTML = '';
+        showPage('home');
+      }, 2500);
+    }
+
+    // --------------------------------------------------------------
+    // 10. CONTACT HANDLER
+    // --------------------------------------------------------------
+    function handleContact(e) {
+      e.preventDefault();
+      const name = document.getElementById('contact-name').value.trim();
+      const email = document.getElementById('contact-email').value.trim();
+      const msg = document.getElementById('contact-msg').value.trim();
+
+      // Save to localStorage
+      const msgs = JSON.parse(localStorage.getItem('contactMessages')) || [];
+      msgs.push({ name, email, msg, date: new Date().toISOString() });
+      localStorage.setItem('contactMessages', JSON.stringify(msgs));
+
+      document.getElementById('contact-message').innerHTML =
+        `<div class="alert-box">✅ Message sent! We'll get back to you soon.</div>`;
+      document.getElementById('contact-name').value = '';
+      document.getElementById('contact-email').value = '';
+      document.getElementById('contact-msg').value = '';
+      setTimeout(() => {
+        document.getElementById('contact-message').innerHTML = '';
+      }, 3000);
+    }
+
+    // --------------------------------------------------------------
+    // 11. FEEDBACK HANDLER (with stars)
+    // --------------------------------------------------------------
+    // Star rating logic
+    document.addEventListener('DOMContentLoaded', () => {
+      const stars = document.querySelectorAll('#star-rating .star');
+      stars.forEach(star => {
+        star.addEventListener('click', function() {
+          const val = parseInt(this.dataset.value);
+          selectedRating = val;
+          document.getElementById('fb-rating').value = val;
+          stars.forEach(s => {
+            s.classList.toggle('active', parseInt(s.dataset.value) <= val);
+          });
+        });
+        star.addEventListener('mouseenter', function() {
+          const val = parseInt(this.dataset.value);
+          stars.forEach(s => {
+            s.style.color = parseInt(s.dataset.value) <= val ? '#facc15' : '#d1d9e6';
+          });
+        });
+        star.addEventListener('mouseleave', function() {
+          stars.forEach(s => {
+            s.style.color = s.classList.contains('active') ? '#facc15' : '#d1d9e6';
+          });
+        });
+      });
+    });
+
+    function handleFeedback(e) {
+      e.preventDefault();
+      const name = document.getElementById('fb-name').value.trim();
+      const rating = parseInt(document.getElementById('fb-rating').value);
+      const comment = document.getElementById('fb-comment').value.trim();
+
+      if (rating === 0) {
+        document.getElementById('feedback-message').innerHTML =
+          `<div class="alert-box" style="background:#fee2e2;border-color:#fca5a5;color:#991b1b;">❌ Please select a rating.</div>`;
+        return;
+      }
+
+      const feedbacks = JSON.parse(localStorage.getItem('feedbacks')) || [];
+      feedbacks.push({ name, rating, comment, date: new Date().toISOString() });
+      localStorage.setItem('feedbacks', JSON.stringify(feedbacks));
+
+      document.getElementById('feedback-message').innerHTML =
+        `<div class="alert-box">✅ Thank you for your feedback (${rating}⭐)!</div>`;
+      document.getElementById('fb-name').value = '';
+      document.getElementById('fb-comment').value = '';
+      // reset stars
+      document.querySelectorAll('#star-rating .star').forEach(s => s.classList.remove('active'));
+      selectedRating = 0;
+      document.getElementById('fb-rating').value = '0';
+      setTimeout(() => {
+        document.getElementById('feedback-message').innerHTML = '';
+      }, 3000);
+    }
+
+    // --------------------------------------------------------------
+    // 12. FILTER BUTTONS
+    // --------------------------------------------------------------
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.category-filters button').forEach(btn => {
+        btn.addEventListener('click', function() {
+          currentFilter = this.dataset.filter;
+          renderProducts(currentFilter);
+        });
+      });
+    });
+
+    // --------------------------------------------------------------
+    // 13. INIT
+    // --------------------------------------------------------------
+    document.addEventListener('DOMContentLoaded', () => {
+      renderProducts('all');
+      renderCart();
+      updateCartBadge();
+      updateUserStatus();
+
+      if (getLoggedInUser()) {
+        // just update
+      }
+
+      showPage('home');
+    });
+
+    // Expose functions globally for inline onclick
+    window.showPage = showPage;
+    window.addToCart = addToCart;
+    window.removeFromCart = removeFromCart;
+    window.clearCart = clearCart;
+    window.proceedToPayment = proceedToPayment;
+    window.handleLogin = handleLogin;
+    window.handleRegister = handleRegister;
+    window.handlePayment = handlePayment;
+    window.handleContact = handleContact;
+    window.handleFeedback = handleFeedback;
+    window.logoutUser = logoutUser;
+    window.renderCart = renderCart;
+    window.renderPaymentSummary = renderPaymentSummary;
+  </script>
 
 </body>
 </html>
